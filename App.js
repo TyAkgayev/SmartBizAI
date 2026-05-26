@@ -248,7 +248,7 @@ function Hero() {
           </View>
 
           <View style={{ flexDirection: 'row', gap: 24, flexWrap: 'wrap' }}>
-            {['No credit card required', '14-day free trial', '500+ businesses served'].map((t, i) => (
+            {['No credit card required', '500+ businesses served'].map((t, i) => (
               <View key={i} style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                 <Text style={{ color: C.teal, fontSize: 14, fontWeight: '700' }}>✓</Text>
                 <Text style={{ color: C.muted, fontSize: 13 }}>{t}</Text>
@@ -573,7 +573,6 @@ const PLANS = [
       'Up to 5 users',
       'Core reporting dashboard',
       'Email support',
-      '14-day free trial',
     ],
     highlighted: false,
   },
@@ -587,7 +586,6 @@ const PLANS = [
       'Advanced analytics & forecasting',
       'Priority email & chat support',
       'API access & webhooks',
-      '14-day free trial',
     ],
     highlighted: true,
   },
