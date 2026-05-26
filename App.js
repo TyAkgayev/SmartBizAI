@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -172,7 +172,7 @@ function SectionHeading({ badge, title, subtitle, center = false, badgeColor, ba
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 
-function Navbar() {
+function Navbar({ page, onNav }) {
   const { isDesktop, pad } = useLayout();
   return (
     <View style={{
@@ -184,7 +184,7 @@ function Navbar() {
       borderBottomWidth: 1,
       borderBottomColor: C.border,
     }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+      <TouchableOpacity onPress={() => onNav('home')} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
         <View style={{
           width: 34, height: 34, borderRadius: 9,
           backgroundColor: C.blue,
@@ -195,15 +195,21 @@ function Navbar() {
         <Text style={{ color: C.text, fontSize: 19, fontWeight: '800', letterSpacing: -0.3 }}>
           SmartBiz<Text style={{ color: C.blue }}>AI</Text>
         </Text>
-      </View>
+      </TouchableOpacity>
 
       {isDesktop && (
         <View style={{ flexDirection: 'row', gap: 36, alignItems: 'center' }}>
-          {['Services', 'How It Works', 'Pricing', 'About'].map(item => (
-            <TouchableOpacity key={item}>
-              <Text style={{ color: C.mid, fontSize: 14, fontWeight: '500' }}>{item}</Text>
-            </TouchableOpacity>
-          ))}
+          {['Services', 'How It Works', 'Pricing', 'About'].map(item => {
+            const key = item.toLowerCase().replace(/\s+/g, '-');
+            const active = page === key;
+            return (
+              <TouchableOpacity key={item} onPress={() => onNav(key)}>
+                <Text style={{ color: active ? C.blue : C.mid, fontSize: 14, fontWeight: active ? '700' : '500' }}>
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       )}
 
@@ -799,23 +805,155 @@ function Footer() {
   );
 }
 
+// ─── About page ───────────────────────────────────────────────────────────────
+
+function AboutPage() {
+  const { isDesktop, pad } = useLayout();
+  return (
+    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      {/* Hero band */}
+      <View style={{ paddingHorizontal: pad, paddingTop: 72, paddingBottom: 80 }}>
+        <View style={{
+          flexDirection: isDesktop ? 'row' : 'column',
+          gap: isDesktop ? 72 : 48,
+          alignItems: isDesktop ? 'center' : 'stretch',
+        }}>
+          {/* Photo */}
+          <View style={{ alignItems: isDesktop ? 'flex-start' : 'center' }}>
+            <View style={{
+              borderRadius: 24,
+              borderWidth: 2,
+              borderColor: C.borderHi,
+              overflow: 'hidden',
+              width: isDesktop ? 340 : '100%',
+              maxWidth: 380,
+            }}>
+              <Image
+                source={require('./assets/BizOwners.jpg')}
+                style={{ width: '100%', aspectRatio: 844 / 973 }}
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+
+          {/* Bio */}
+          <View style={{ flex: 1, gap: 24 }}>
+            <Badge text="ABOUT US" />
+            <Text style={{
+              color: C.text,
+              fontSize: isDesktop ? 46 : 32,
+              fontWeight: '900',
+              lineHeight: isDesktop ? 56 : 42,
+              letterSpacing: -0.8,
+            }}>
+              Built by small{'\n'}business owners,{'\n'}
+              <Text style={{ color: C.blue }}>for small business owners.</Text>
+            </Text>
+            <Text style={{ color: C.mid, fontSize: 16, lineHeight: 28 }}>
+              We started SmartBiz AI after spending years watching great small businesses struggle with the same administrative burdens that large corporations solved a decade ago with enterprise software costing hundreds of thousands of dollars.
+            </Text>
+            <Text style={{ color: C.mid, fontSize: 16, lineHeight: 28 }}>
+              Our mission is simple: bring the power of AI automation to the businesses that need it most — the ones where the owner is also the accountant, the HR manager, and the head of sales all at once.
+            </Text>
+
+            {/* Values row */}
+            <View style={{
+              flexDirection: isDesktop ? 'row' : 'column',
+              gap: 16,
+              marginTop: 8,
+            }}>
+              {[
+                { icon: '🎯', label: 'Mission-driven', desc: 'Every feature we ship solves a real pain point we heard from real owners.' },
+                { icon: '🔒', label: 'Trust first',    desc: 'Your financial data is encrypted, never sold, and always yours.' },
+                { icon: '⚡', label: 'Move fast',      desc: 'We ship improvements every week, guided by customer feedback.' },
+              ].map((v, i) => (
+                <View key={i} style={{
+                  flex: 1,
+                  backgroundColor: C.card,
+                  borderRadius: 16,
+                  borderWidth: 1,
+                  borderColor: C.border,
+                  padding: 20,
+                  gap: 8,
+                }}>
+                  <Text style={{ fontSize: 26 }}>{v.icon}</Text>
+                  <Text style={{ color: C.text, fontSize: 15, fontWeight: '700' }}>{v.label}</Text>
+                  <Text style={{ color: C.muted, fontSize: 13, lineHeight: 20 }}>{v.desc}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        </View>
+      </View>
+
+      {/* Team stat band */}
+      <View style={{
+        backgroundColor: C.surface,
+        paddingHorizontal: pad,
+        paddingVertical: 56,
+        marginBottom: 80,
+        gap: 40,
+      }}>
+        <SectionHeading
+          badge="OUR STORY"
+          title="From spreadsheets to smart automation"
+          subtitle="SmartBiz AI was founded in 2023 out of a garage in Austin, TX. Today we serve over 500 businesses across the US, helping them reclaim their time and grow with confidence."
+          center
+        />
+        <View style={{
+          flexDirection: isDesktop ? 'row' : 'column',
+          gap: 24,
+        }}>
+          {[
+            { value: '2023',  label: 'Founded' },
+            { value: 'Austin', label: 'Headquartered' },
+            { value: '500+',  label: 'Customers served' },
+            { value: '12',    label: 'Team members' },
+          ].map((s, i) => (
+            <View key={i} style={{
+              flex: 1,
+              backgroundColor: C.card,
+              borderRadius: 18,
+              borderWidth: 1,
+              borderColor: C.border,
+              padding: 28,
+              alignItems: 'center',
+              gap: 6,
+            }}>
+              <Text style={{ color: C.blue, fontSize: 36, fontWeight: '900', letterSpacing: -1 }}>{s.value}</Text>
+              <Text style={{ color: C.muted, fontSize: 13 }}>{s.label}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+
+      <Footer />
+    </ScrollView>
+  );
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
+  const [page, setPage] = useState('home');
   return (
     <View style={styles.root}>
       <StatusBar style="light" />
-      <Navbar />
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-        <Hero />
-        <StatsBanner />
-        <Services />
-        <HowItWorks />
-        <Testimonials />
-        <Pricing />
-        <FinalCTA />
-        <Footer />
-      </ScrollView>
+      <Navbar page={page} onNav={setPage} />
+      {page === 'about' ? (
+        <AboutPage />
+      ) : (
+        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+          <Hero />
+          <StatsBanner />
+          <Services />
+          <HowItWorks />
+          <Testimonials />
+          <Pricing />
+          <FinalCTA />
+          <Footer />
+        </ScrollView>
+      )}
     </View>
   );
 }
