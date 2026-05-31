@@ -363,7 +363,7 @@ function HomePage({ onNav }) {
           backgroundColor: C.card,
         }}>
           <Image
-            source={require('./assets/hero.png')}
+            source={require('./assets/workflow-desktop.png')}
             style={{ width: '100%', height: isDesktop ? 360 : 240 }}
             resizeMode="cover"
           />
@@ -427,6 +427,22 @@ function HomePage({ onNav }) {
         </View>
       </View>
 
+      {/* Deck montage band */}
+      <View style={{
+        marginHorizontal: pad,
+        marginBottom: 40,
+        borderRadius: 22,
+        borderWidth: 1,
+        borderColor: C.border,
+        overflow: 'hidden',
+      }}>
+        <Image
+          source={require('./assets/deck-montage.png')}
+          style={{ width: '100%', height: isDesktop ? 260 : 180 }}
+          resizeMode="cover"
+        />
+      </View>
+
       <CTABox
         title="Let's Talk About Your Business"
         body="No pressure. No tech jargon. Just a quick conversation about how your business works, where your team may be losing time, and whether we can help."
@@ -465,7 +481,7 @@ function ProblemPage({ onNav }) {
         </View>
         <View style={{ flex: isDesktop ? 0.9 : undefined, width: isDesktop ? undefined : '100%' }}>
           <Image
-            source={require('./assets/hero.png')}
+            source={require('./assets/reception-workflow.png')}
             style={{
               width: '100%',
               height: isDesktop ? 400 : 240,
@@ -570,7 +586,7 @@ function HowItWorksPage({ onNav }) {
         alignItems: 'center',
       }}>
         <Image
-          source={require('./assets/BizOwners.jpg')}
+          source={require('./assets/meeting.png')}
           style={{
             flex: isDesktop ? 1 : undefined,
             width: isDesktop ? undefined : '100%',
@@ -795,7 +811,7 @@ function WhyUsPage({ onNav }) {
           overflow: 'hidden',
         }}>
           <Image
-            source={require('./assets/BizOwners.jpg')}
+            source={require('./assets/owner-handshake.png')}
             style={{ width: '100%', height: isDesktop ? 320 : 240 }}
             resizeMode="cover"
           />
