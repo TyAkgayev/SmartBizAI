@@ -14,20 +14,20 @@ import {
 // ─── Theme ───────────────────────────────────────────────────────────────────
 
 const C = {
-  bg:       '#020707',
-  surface:  '#071312',
-  card:     '#061716',
-  card2:    '#041110',
-  teal:     '#10c8aa',
-  teal2:    '#14e0bd',
-  tealDim:  'rgba(16,200,170,0.13)',
-  tealGlow: 'rgba(16,200,170,0.24)',
-  border:   'rgba(16,200,170,0.24)',
-  borderHi: 'rgba(16,200,170,0.46)',
-  text:     '#f4fbfa',
-  mid:      '#c9d7d4',
-  muted:    '#8ea4a0',
-  soft:     '#475569',
+  bg:       '#04080F',
+  surface:  '#080E1C',
+  card:     '#0C1322',
+  card2:    '#080E1C',
+  teal:     '#3B82F6',
+  teal2:    '#60A5FA',
+  tealDim:  'rgba(59,130,246,0.12)',
+  tealGlow: 'rgba(59,130,246,0.25)',
+  border:   'rgba(59,130,246,0.12)',
+  borderHi: 'rgba(59,130,246,0.30)',
+  text:     '#F1F5F9',
+  mid:      '#94A3B8',
+  muted:    '#475569',
+  soft:     '#334155',
 };
 
 // ─── Layout hook ─────────────────────────────────────────────────────────────
@@ -87,7 +87,7 @@ function CTAButton({ label, primary = false, onPress, style }) {
         justifyContent: 'center',
         ...(primary
           ? {
-              background: 'linear-gradient(90deg,#09b99e,#18d0b3)',
+              background: 'linear-gradient(90deg,#2563EB,#3B82F6)',
               backgroundColor: C.teal,
             }
           : {
@@ -194,7 +194,7 @@ const NAV_ITEMS = [
   { label: 'Contact',     key: 'contact' },
 ];
 
-function Navbar({ page, onNav }) {
+function Navbar({ page, onNav, navItems = NAV_ITEMS }) {
   const { isDesktop, isTablet, pad } = useLayout();
   return (
     <View style={{
@@ -213,7 +213,7 @@ function Navbar({ page, onNav }) {
       {/* Brand */}
       <TouchableOpacity onPress={() => onNav('home')}>
         <Text style={{ color: C.text, fontSize: 28, fontWeight: '900', letterSpacing: -1 }}>
-          AiSmart<Text style={{ color: C.teal }}>Biz</Text>
+          SmartBiz<Text style={{ color: C.teal }}>AI</Text>
         </Text>
         {isDesktop && (
           <Text style={{ color: C.muted, fontSize: 10, letterSpacing: 1.2, marginTop: 3 }}>
@@ -225,7 +225,7 @@ function Navbar({ page, onNav }) {
       {/* Nav links */}
       {isDesktop && (
         <View style={{ flexDirection: 'row', gap: 28, alignItems: 'center' }}>
-          {NAV_ITEMS.map(item => (
+          {navItems.map(item => (
             <TouchableOpacity key={item.key} onPress={() => onNav(item.key)}>
               <Text style={{
                 color: page === item.key ? C.teal : '#eaf4f2',
@@ -270,7 +270,7 @@ function Footer() {
       paddingVertical: 30,
     }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-        <Text style={{ color: C.muted, fontSize: 13 }}>© 2026 AiSmartBiz</Text>
+        <Text style={{ color: C.muted, fontSize: 13 }}>© 2026 SmartBizAI</Text>
         <Text style={{ color: C.muted, fontSize: 13 }}>Practical AI systems for small business.</Text>
         <Text style={{ color: C.muted, fontSize: 13, textAlign: 'right', flex: 1 }}>
           Tell us how your business works — we'll tell you where we can make it faster.
@@ -375,7 +375,7 @@ function HomePage({ onNav }) {
             backgroundColor: 'rgba(2,9,9,0.82)',
             borderRadius: 16,
             borderWidth: 1,
-            borderColor: 'rgba(16,200,170,0.32)',
+            borderColor: 'rgba(59,130,246,0.25)',
             padding: 18,
           }}>
             <Text style={{ color: C.text, fontSize: 17, fontWeight: '800', marginBottom: 6 }}>
@@ -393,7 +393,7 @@ function HomePage({ onNav }) {
         paddingHorizontal: pad,
         paddingVertical: 60,
         borderTopWidth: 1,
-        borderTopColor: 'rgba(16,200,170,0.13)',
+        borderTopColor: 'rgba(59,130,246,0.08)',
       }}>
         <View style={{ alignItems: 'center', marginBottom: 36 }}>
           <Eyebrow>The Problem</Eyebrow>
@@ -416,8 +416,8 @@ function HomePage({ onNav }) {
           marginTop: 24,
           borderRadius: 18,
           borderWidth: 1,
-          borderColor: 'rgba(16,200,170,0.36)',
-          backgroundColor: 'rgba(16,200,170,0.08)',
+          borderColor: 'rgba(59,130,246,0.30)',
+          backgroundColor: 'rgba(59,130,246,0.06)',
           padding: 22,
           alignItems: 'center',
         }}>
@@ -455,7 +455,7 @@ function ProblemPage({ onNav }) {
         paddingHorizontal: pad,
         paddingVertical: 40,
         borderTopWidth: 1,
-        borderTopColor: 'rgba(16,200,170,0.13)',
+        borderTopColor: 'rgba(59,130,246,0.08)',
         flexDirection: isDesktop ? 'row' : 'column',
         gap: 28,
         alignItems: 'center',
@@ -515,7 +515,7 @@ function HowItWorksPage({ onNav }) {
         paddingHorizontal: pad,
         paddingVertical: 40,
         borderTopWidth: 1,
-        borderTopColor: 'rgba(16,200,170,0.13)',
+        borderTopColor: 'rgba(59,130,246,0.08)',
       }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}>
           {STEPS.map((s, i) => (
@@ -564,7 +564,7 @@ function HowItWorksPage({ onNav }) {
         paddingHorizontal: pad,
         paddingVertical: 40,
         borderTopWidth: 1,
-        borderTopColor: 'rgba(16,200,170,0.13)',
+        borderTopColor: 'rgba(59,130,246,0.08)',
         flexDirection: isDesktop ? 'row' : 'column',
         gap: 28,
         alignItems: 'center',
@@ -658,7 +658,7 @@ function ServicesPage({ onNav }) {
         paddingHorizontal: pad,
         paddingVertical: 40,
         borderTopWidth: 1,
-        borderTopColor: 'rgba(16,200,170,0.13)',
+        borderTopColor: 'rgba(59,130,246,0.08)',
       }}>
         {/* Setup fee */}
         <View style={{
@@ -772,7 +772,7 @@ function WhyUsPage({ onNav }) {
   return (
     <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
       <PageHero
-        eyebrow="Why AiSmartBiz"
+        eyebrow="Why SmartBizAI"
         title="Small, Family-Oriented, Eager to Learn, and Results-Driven."
         lead="We are not here to sell you technology you do not need. We are here to understand your business, find friction, and help your team move faster where it actually matters."
       />
@@ -781,7 +781,7 @@ function WhyUsPage({ onNav }) {
         paddingHorizontal: pad,
         paddingVertical: 40,
         borderTopWidth: 1,
-        borderTopColor: 'rgba(16,200,170,0.13)',
+        borderTopColor: 'rgba(59,130,246,0.08)',
         flexDirection: isDesktop ? 'row' : 'column',
         gap: 24,
       }}>
@@ -840,7 +840,7 @@ function WhyUsPage({ onNav }) {
         paddingVertical: 24,
         marginBottom: 16,
         borderTopWidth: 1,
-        borderTopColor: 'rgba(16,200,170,0.13)',
+        borderTopColor: 'rgba(59,130,246,0.08)',
       }}>
         {[
           '✓  Built for small businesses under 50 employees',
@@ -877,14 +877,14 @@ function ContactPage() {
       <PageHero
         eyebrow="Free 5-Minute Call"
         title="Tell Us How Your Business Works."
-        lead="No pressure. No tech jargon. Just a quick conversation about what's working, what's not, and whether AiSmartBiz can help your team move faster."
+        lead="No pressure. No tech jargon. Just a quick conversation about what's working, what's not, and whether SmartBizAI can help your team move faster."
       />
 
       <View style={{
         paddingHorizontal: pad,
         paddingVertical: 40,
         borderTopWidth: 1,
-        borderTopColor: 'rgba(16,200,170,0.13)',
+        borderTopColor: 'rgba(59,130,246,0.08)',
         flexDirection: isDesktop ? 'row' : 'column',
         gap: 24,
         marginBottom: 60,
@@ -992,7 +992,113 @@ function ContactPage() {
   );
 }
 
+// ─── ABOUT US PAGE ───────────────────────────────────────────────────────────
+
+function AboutPage({ onNav }) {
+  const { isDesktop, pad } = useLayout();
+  return (
+    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <PageHero
+        eyebrow="About Us"
+        title="Small, Family-Oriented, Eager to Learn, and Results-Driven."
+        lead="We are not here to sell you technology you do not need. We are here to understand your business, find friction, and help your team move faster where it actually matters."
+      />
+
+      {/* Owner photo + bio */}
+      <View style={{
+        paddingHorizontal: pad,
+        paddingVertical: 40,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(59,130,246,0.08)',
+        flexDirection: isDesktop ? 'row' : 'column',
+        gap: 40,
+        alignItems: isDesktop ? 'flex-start' : 'stretch',
+      }}>
+        {/* Photo */}
+        <View style={{
+          borderRadius: 24,
+          borderWidth: 2,
+          borderColor: C.borderHi,
+          overflow: 'hidden',
+          width: isDesktop ? 340 : '100%',
+          alignSelf: isDesktop ? 'flex-start' : 'center',
+        }}>
+          <Image
+            source={require('./assets/BizOwners.jpg')}
+            style={{ width: isDesktop ? 340 : '100%', aspectRatio: 844 / 973 }}
+            resizeMode="cover"
+          />
+        </View>
+
+        {/* Bio */}
+        <View style={{ flex: 1, gap: 20 }}>
+          <Text style={{
+            color: C.text,
+            fontSize: isDesktop ? 36 : 26,
+            fontWeight: '900',
+            lineHeight: isDesktop ? 46 : 36,
+            letterSpacing: -0.6,
+          }}>
+            Built for small businesses,{'\n'}
+            <Text style={{ color: C.teal }}>by people who get it.</Text>
+          </Text>
+          <Text style={{ color: C.mid, fontSize: 16, lineHeight: 28 }}>
+            We started SmartBizAI after watching great small businesses struggle with the same repetitive friction that slows owner-led teams down every single day — slow lead response, missed follow-up, admin that never ends.
+          </Text>
+          <Text style={{ color: C.mid, fontSize: 16, lineHeight: 28 }}>
+            Our approach is simple: sit down with you, learn how your business actually runs, and build only where automation creates real value. No tech jargon. No overselling. Just practical systems that save your team time.
+          </Text>
+
+          {/* Value pills */}
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 8 }}>
+            {[
+              { icon: '🎯', label: 'Results-driven' },
+              { icon: '🤝', label: 'Relationship-first' },
+              { icon: '⚡', label: 'Fast & practical' },
+              { icon: '🏠', label: 'Family-oriented' },
+            ].map((v, i) => (
+              <View key={i} style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 8,
+                borderRadius: 999,
+                borderWidth: 1,
+                borderColor: C.border,
+                backgroundColor: C.card,
+                paddingHorizontal: 16,
+                paddingVertical: 10,
+              }}>
+                <Text style={{ fontSize: 16 }}>{v.icon}</Text>
+                <Text style={{ color: C.text, fontSize: 14, fontWeight: '700' }}>{v.label}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      </View>
+
+      <CTABox
+        title="Let's Talk About Your Business"
+        body="No pressure. No tech jargon. Just a quick conversation about how your business works, where your team may be losing time, and whether we can help."
+        btnLabel="Book a Free 5-Minute Call"
+        onPress={() => onNav('contact')}
+      />
+
+      <Footer />
+    </ScrollView>
+  );
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
+
+const NAV_ITEMS_FULL = [
+  { label: 'Home',        key: 'home' },
+  { label: 'The Problem', key: 'problem' },
+  { label: 'How It Works',key: 'how-it-works' },
+  { label: 'Services',    key: 'services' },
+  { label: 'Why Us',      key: 'why-us' },
+  { label: 'About Us',    key: 'about' },
+  { label: 'Contact',     key: 'contact' },
+];
 
 export default function App() {
   const [page, setPage] = useState('home');
@@ -1003,6 +1109,7 @@ export default function App() {
       case 'how-it-works': return <HowItWorksPage  onNav={setPage} />;
       case 'services':     return <ServicesPage     onNav={setPage} />;
       case 'why-us':       return <WhyUsPage        onNav={setPage} />;
+      case 'about':        return <AboutPage        onNav={setPage} />;
       case 'contact':      return <ContactPage />;
       default:             return <HomePage         onNav={setPage} />;
     }
@@ -1011,12 +1118,12 @@ export default function App() {
   return (
     <View style={styles.root}>
       <StatusBar style="light" />
-      <Navbar page={page} onNav={setPage} />
+      <Navbar page={page} onNav={setPage} navItems={NAV_ITEMS_FULL} />
       {renderPage()}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#020707' },
+  root: { flex: 1, backgroundColor: '#04080F' },
 });
