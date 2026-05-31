@@ -60,9 +60,11 @@ function Navbar({ onNav }) {
         borderBottomColor: C.border,
       }}>
         <TouchableOpacity onPress={() => { onNav('home'); setOpen(false); }}>
-          <Text style={{ fontSize: 22, fontWeight: '900', color: C.text, letterSpacing: -0.5 }}>
-            SmartBiz<Text style={{ color: C.green }}>Ai</Text>
-          </Text>
+          <Image
+            source={require('./assets/logo.png')}
+            style={{ height: 36, width: 160 }}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
 
         {isDesktop ? (
