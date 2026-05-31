@@ -170,18 +170,17 @@ function Hero({ onNav }) {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              gap: 12,
+              gap: 10,
               backgroundColor: C.green,
               borderRadius: 10,
-              paddingHorizontal: isDesktop ? 22 : 16,
+              paddingHorizontal: isDesktop ? 22 : 14,
               paddingVertical: isDesktop ? 16 : 13,
-              alignSelf: 'flex-start',
               marginBottom: 14,
             }}
           >
-            <Text style={{ fontSize: isDesktop ? 20 : 17 }}>📅</Text>
-            <View>
-              <Text style={{ color: C.white, fontWeight: '900', fontSize: isDesktop ? 16 : 14 }}>
+            <Text style={{ fontSize: isDesktop ? 20 : 16, flexShrink: 0 }}>📅</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: C.white, fontWeight: '900', fontSize: isDesktop ? 16 : 13 }} numberOfLines={1} adjustsFontSizeToFit>
                 Let's Talk About Your Business
               </Text>
               <Text style={{ color: 'rgba(255,255,255,0.78)', fontSize: isDesktop ? 13 : 11 }}>
@@ -203,7 +202,7 @@ function Hero({ onNav }) {
         </View>
 
         {/* Image column */}
-        <View style={{ flex: isDesktop ? 0.85 : 0.9, overflow: 'hidden' }}>
+        <View style={{ flex: isDesktop ? 0.85 : 0.7, overflow: 'hidden' }}>
           <Image
             source={require('./assets/owner-handshake.png')}
             style={{
@@ -231,7 +230,7 @@ const PAIN_POINTS = [
 ];
 
 function LoseTimeSection() {
-  const { isDesktop, isTablet, pad } = useLayout();
+  const { isDesktop, pad } = useLayout();
   return (
     <View style={{ backgroundColor: C.surface, paddingHorizontal: pad, paddingVertical: 52 }}>
       <Text style={{
@@ -245,38 +244,33 @@ function LoseTimeSection() {
         Where Small Businesses Lose Time
       </Text>
 
-      <View style={{
-        flexDirection: 'row',
-        flexWrap: isTablet ? 'nowrap' : 'wrap',
-        justifyContent: 'center',
-        gap: isTablet ? 4 : 14,
-      }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
         {PAIN_POINTS.map((p, i) => (
           <View key={i} style={{
-            flex: isTablet ? 1 : undefined,
-            width: isTablet ? undefined : '38%',
+            flex: 1,
             alignItems: 'center',
-            paddingVertical: 10,
-            paddingHorizontal: 6,
+            paddingVertical: 8,
+            paddingHorizontal: isDesktop ? 8 : 2,
           }}>
             <View style={{
-              width: 58, height: 58,
-              borderRadius: 16,
+              width: isDesktop ? 58 : 46,
+              height: isDesktop ? 58 : 46,
+              borderRadius: isDesktop ? 16 : 12,
               borderWidth: 1.5,
               borderColor: C.green,
               backgroundColor: C.greenBg,
               alignItems: 'center',
               justifyContent: 'center',
-              marginBottom: 10,
+              marginBottom: 8,
             }}>
-              <Text style={{ fontSize: 26 }}>{p.icon}</Text>
+              <Text style={{ fontSize: isDesktop ? 26 : 20 }}>{p.icon}</Text>
             </View>
             <Text style={{
               color: C.mid,
-              fontSize: isDesktop ? 13 : 11,
+              fontSize: isDesktop ? 13 : 10,
               fontWeight: '600',
               textAlign: 'center',
-              lineHeight: 17,
+              lineHeight: 15,
             }}>
               {p.label}
             </Text>
