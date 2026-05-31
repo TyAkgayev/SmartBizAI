@@ -8,28 +8,26 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   Image,
+  TextInput,
 } from 'react-native';
 
 // ─── Theme ───────────────────────────────────────────────────────────────────
 
 const C = {
-  bg:         '#04080F',
-  surface:    '#080E1C',
-  card:       '#0C1322',
-  blue:       '#3B82F6',
-  blueDeep:   '#1D4ED8',
-  blueDim:    'rgba(59,130,246,0.12)',
-  blueGlow:   'rgba(59,130,246,0.25)',
-  purple:     '#8B5CF6',
-  purpleDim:  'rgba(139,92,246,0.12)',
-  teal:       '#14B8A6',
-  tealDim:    'rgba(20,184,166,0.12)',
-  border:     'rgba(59,130,246,0.12)',
-  borderHi:   'rgba(59,130,246,0.30)',
-  text:       '#F1F5F9',
-  mid:        '#94A3B8',
-  muted:      '#475569',
-  gold:       '#F59E0B',
+  bg:       '#020707',
+  surface:  '#071312',
+  card:     '#061716',
+  card2:    '#041110',
+  teal:     '#10c8aa',
+  teal2:    '#14e0bd',
+  tealDim:  'rgba(16,200,170,0.13)',
+  tealGlow: 'rgba(16,200,170,0.24)',
+  border:   'rgba(16,200,170,0.24)',
+  borderHi: 'rgba(16,200,170,0.46)',
+  text:     '#f4fbfa',
+  mid:      '#c9d7d4',
+  muted:    '#8ea4a0',
+  soft:     '#475569',
 };
 
 // ─── Layout hook ─────────────────────────────────────────────────────────────
@@ -39,80 +37,40 @@ function useLayout() {
   return {
     isDesktop: width >= 1024,
     isTablet:  width >= 768,
-    pad:       width >= 1024 ? 80 : width >= 768 ? 40 : 24,
+    pad:       width >= 1024 ? 80 : width >= 768 ? 40 : 20,
+    w:         width,
   };
 }
 
 // ─── Shared components ───────────────────────────────────────────────────────
 
-function Placeholder({ height = 200, label = 'Image', borderRadius = 16, style }) {
+function Eyebrow({ children }) {
   return (
-    <View style={[{
-      width: '100%',
-      height,
-      backgroundColor: C.card,
-      borderRadius,
-      borderWidth: 1.5,
-      borderColor: C.borderHi,
-      borderStyle: 'dashed',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 10,
-    }, style]}>
-      <View style={{
-        width: 52, height: 52, borderRadius: 14,
-        backgroundColor: C.blueDim,
-        alignItems: 'center', justifyContent: 'center',
-      }}>
-        <Text style={{ fontSize: 26 }}>🖼</Text>
-      </View>
-      <Text style={{ color: C.blue, fontSize: 13, fontWeight: '700', textAlign: 'center', paddingHorizontal: 16 }}>
-        {label}
+    <Text style={{
+      color: C.teal,
+      fontSize: 12,
+      fontWeight: '900',
+      letterSpacing: 2,
+      textTransform: 'uppercase',
+      marginBottom: 14,
+    }}>
+      {children}
+    </Text>
+  );
+}
+
+function Divider() {
+  return <View style={{ height: 1, backgroundColor: C.border, marginVertical: 4 }} />;
+}
+
+function CheckItem({ children, light = false }) {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 10, marginBottom: 12 }}>
+      <Text style={{ color: C.teal, fontWeight: '900', fontSize: 15, marginTop: 1 }}>✓</Text>
+      <Text style={{ color: light ? 'rgba(255,255,255,0.85)' : C.mid, fontSize: 14, lineHeight: 22, flex: 1 }}>
+        {children}
       </Text>
-      <Text style={{ color: C.muted, fontSize: 11 }}>DALL·E image placeholder</Text>
     </View>
-  );
-}
-
-function AvatarPlaceholder({ size = 44, label }) {
-  return (
-    <View style={{
-      width: size, height: size, borderRadius: size / 2,
-      backgroundColor: C.blueDim,
-      borderWidth: 1.5, borderColor: C.borderHi, borderStyle: 'dashed',
-      alignItems: 'center', justifyContent: 'center',
-    }}>
-      <Text style={{ fontSize: size * 0.42 }}>👤</Text>
-    </View>
-  );
-}
-
-function Badge({ text, color = C.blue, dimColor = C.blueDim }) {
-  return (
-    <View style={{
-      alignSelf: 'flex-start',
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 6,
-      borderRadius: 999,
-      borderWidth: 1,
-      borderColor: color + '55',
-      backgroundColor: dimColor,
-      paddingHorizontal: 14,
-      paddingVertical: 6,
-    }}>
-      <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: color }} />
-      <Text style={{ color, fontSize: 11, fontWeight: '700', letterSpacing: 0.8 }}>{text}</Text>
-    </View>
-  );
-}
-
-function Divider({ vertical = false }) {
-  return (
-    <View style={vertical
-      ? { width: 1, alignSelf: 'stretch', backgroundColor: C.border }
-      : { height: 1, backgroundColor: C.border }
-    } />
   );
 }
 
@@ -120,60 +78,124 @@ function CTAButton({ label, primary = false, onPress, style }) {
   return (
     <TouchableOpacity
       onPress={onPress}
+      activeOpacity={0.82}
       style={[{
-        borderRadius: 12,
-        paddingHorizontal: 28,
+        borderRadius: 10,
+        paddingHorizontal: 24,
         paddingVertical: 15,
         alignItems: 'center',
         justifyContent: 'center',
         ...(primary
-          ? { backgroundColor: C.blue }
-          : { borderWidth: 1.5, borderColor: C.borderHi }),
+          ? {
+              background: 'linear-gradient(90deg,#09b99e,#18d0b3)',
+              backgroundColor: C.teal,
+            }
+          : {
+              borderWidth: 1,
+              borderColor: C.border,
+            }),
       }, style]}
     >
       <Text style={{
-        fontSize: 15, fontWeight: '700',
+        fontSize: 16,
+        fontWeight: '900',
         color: primary ? '#fff' : C.mid,
-      }}>{label}</Text>
+      }}>
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 }
 
-// ─── Section heading ──────────────────────────────────────────────────────────
-
-function SectionHeading({ badge, title, subtitle, center = false, badgeColor, badgeDim }) {
-  const { isDesktop } = useLayout();
+function CTABox({ title, body, btnLabel, onPress }) {
+  const { pad } = useLayout();
   return (
-    <View style={{ alignItems: center ? 'center' : 'flex-start', marginBottom: 52, gap: 14 }}>
-      <Badge text={badge} color={badgeColor} dimColor={badgeDim} />
+    <View style={{
+      marginHorizontal: pad,
+      marginBottom: 80,
+      borderRadius: 28,
+      borderWidth: 1,
+      borderColor: C.borderHi,
+      backgroundColor: C.card,
+      padding: 48,
+      alignItems: 'center',
+    }}>
       <Text style={{
         color: C.text,
-        fontSize: isDesktop ? 42 : 30,
-        fontWeight: '800',
-        lineHeight: isDesktop ? 52 : 40,
-        letterSpacing: -0.8,
-        textAlign: center ? 'center' : 'left',
-        maxWidth: 620,
+        fontSize: 32,
+        fontWeight: '900',
+        letterSpacing: -0.6,
+        textAlign: 'center',
+        marginBottom: 14,
       }}>
         {title}
       </Text>
-      {subtitle ? (
-        <Text style={{
-          color: C.mid, fontSize: 17, lineHeight: 28,
-          textAlign: center ? 'center' : 'left',
-          maxWidth: 560,
+      <Text style={{
+        color: C.mid,
+        fontSize: 17,
+        lineHeight: 28,
+        textAlign: 'center',
+        maxWidth: 640,
+        marginBottom: 28,
+      }}>
+        {body}
+      </Text>
+      <CTAButton label={btnLabel} primary onPress={onPress} />
+    </View>
+  );
+}
+
+// ─── Problem cards ────────────────────────────────────────────────────────────
+
+const PROBLEMS = [
+  { icon: '⚡', title: 'Lead Response',  body: 'New inquiries sit too long before anyone replies, and speed matters most when interest is fresh.' },
+  { icon: '📅', title: 'Scheduling',     body: 'Back-and-forth booking, reminders, and rescheduling take time your team does not have.' },
+  { icon: '💬', title: 'Follow-Up',      body: 'Prospects, customers, estimates, reviews, and repeat business slip through the cracks.' },
+  { icon: '🧾', title: 'Admin Work',     body: 'Manual updates, copy-paste work, and routine reminders slow the day down.' },
+];
+
+function ProblemGrid() {
+  const { isDesktop, isTablet } = useLayout();
+  const cols = isDesktop ? 4 : isTablet ? 2 : 1;
+  return (
+    <View style={{
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 16,
+    }}>
+      {PROBLEMS.map((p, i) => (
+        <View key={i} style={{
+          flex: cols === 4 ? 1 : undefined,
+          width: cols === 2 ? '47%' : cols === 1 ? '100%' : undefined,
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: C.border,
+          backgroundColor: C.card,
+          padding: 24,
+          minHeight: 200,
         }}>
-          {subtitle}
-        </Text>
-      ) : null}
+          <Text style={{ fontSize: 32, marginBottom: 16 }}>{p.icon}</Text>
+          <Text style={{ color: C.text, fontSize: 20, fontWeight: '800', marginBottom: 10 }}>{p.title}</Text>
+          <Text style={{ color: C.mid, lineHeight: 24, fontSize: 14 }}>{p.body}</Text>
+        </View>
+      ))}
     </View>
   );
 }
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 
+const NAV_ITEMS = [
+  { label: 'Home',        key: 'home' },
+  { label: 'The Problem', key: 'problem' },
+  { label: 'How It Works',key: 'how-it-works' },
+  { label: 'Services',    key: 'services' },
+  { label: 'Why Us',      key: 'why-us' },
+  { label: 'Contact',     key: 'contact' },
+];
+
 function Navbar({ page, onNav }) {
-  const { isDesktop, pad } = useLayout();
+  const { isDesktop, isTablet, pad } = useLayout();
   return (
     <View style={{
       flexDirection: 'row',
@@ -183,563 +205,55 @@ function Navbar({ page, onNav }) {
       paddingVertical: 18,
       borderBottomWidth: 1,
       borderBottomColor: C.border,
+      backgroundColor: 'rgba(2,7,7,0.92)',
+      position: 'sticky',
+      top: 0,
+      zIndex: 50,
     }}>
-      <TouchableOpacity onPress={() => onNav('home')} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-        <View style={{
-          width: 34, height: 34, borderRadius: 9,
-          backgroundColor: C.blue,
-          alignItems: 'center', justifyContent: 'center',
-        }}>
-          <Text style={{ color: '#fff', fontSize: 16, fontWeight: '900' }}>S</Text>
-        </View>
-        <Text style={{ color: C.text, fontSize: 19, fontWeight: '800', letterSpacing: -0.3 }}>
-          SmartBiz<Text style={{ color: C.blue }}>AI</Text>
+      {/* Brand */}
+      <TouchableOpacity onPress={() => onNav('home')}>
+        <Text style={{ color: C.text, fontSize: 28, fontWeight: '900', letterSpacing: -1 }}>
+          AiSmart<Text style={{ color: C.teal }}>Biz</Text>
         </Text>
+        {isDesktop && (
+          <Text style={{ color: C.muted, fontSize: 10, letterSpacing: 1.2, marginTop: 3 }}>
+            AI SOLUTIONS FOR SMALL BUSINESS
+          </Text>
+        )}
       </TouchableOpacity>
 
+      {/* Nav links */}
       {isDesktop && (
-        <View style={{ flexDirection: 'row', gap: 36, alignItems: 'center' }}>
-          {['Services', 'How It Works', 'Pricing', 'About'].map(item => {
-            const key = item.toLowerCase().replace(/\s+/g, '-');
-            const active = page === key;
-            return (
-              <TouchableOpacity key={item} onPress={() => onNav(key)}>
-                <Text style={{ color: active ? C.blue : C.mid, fontSize: 14, fontWeight: active ? '700' : '500' }}>
-                  {item}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+        <View style={{ flexDirection: 'row', gap: 28, alignItems: 'center' }}>
+          {NAV_ITEMS.map(item => (
+            <TouchableOpacity key={item.key} onPress={() => onNav(item.key)}>
+              <Text style={{
+                color: page === item.key ? C.teal : '#eaf4f2',
+                fontSize: 14,
+                fontWeight: page === item.key ? '700' : '500',
+              }}>
+                {item.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
         </View>
       )}
 
-      <CTAButton label="Get Started Free" primary />
-    </View>
-  );
-}
-
-// ─── Hero ─────────────────────────────────────────────────────────────────────
-
-function Hero() {
-  const { isDesktop, pad } = useLayout();
-  return (
-    <View style={{ paddingHorizontal: pad, paddingTop: 80, paddingBottom: 80 }}>
-      <View style={{
-        flexDirection: isDesktop ? 'row' : 'column',
-        gap: 56,
-        alignItems: 'center',
-      }}>
-        <View style={{ flex: isDesktop ? 1 : undefined, gap: 28, maxWidth: isDesktop ? 560 : undefined }}>
-          <Badge text="AI-POWERED BUSINESS AUTOMATION" />
-
-          <Text style={{
-            color: C.text,
-            fontSize: isDesktop ? 58 : 38,
-            fontWeight: '900',
-            lineHeight: isDesktop ? 68 : 48,
-            letterSpacing: -1.2,
-          }}>
-            Automate Your{'\n'}
-            <Text style={{ color: C.blue }}>Small Business</Text>
-            {'\n'}with AI
-          </Text>
-
-          <Text style={{ color: C.mid, fontSize: 18, lineHeight: 30, maxWidth: 480 }}>
-            Streamline sales, HR payroll, and accounting with intelligent automation built for small business owners — not enterprise IT departments.
-          </Text>
-
-          <View style={{ flexDirection: 'row', gap: 14, flexWrap: 'wrap' }}>
-            <CTAButton label="Start Free Trial" primary />
-            <CTAButton label="Watch Demo  →" />
-          </View>
-
-          <View style={{ flexDirection: 'row', gap: 24, flexWrap: 'wrap' }}>
-            {['No credit card required', '500+ businesses served'].map((t, i) => (
-              <View key={i} style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                <Text style={{ color: C.teal, fontSize: 14, fontWeight: '700' }}>✓</Text>
-                <Text style={{ color: C.muted, fontSize: 13 }}>{t}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        <View style={{ flex: isDesktop ? 1 : undefined, width: '100%' }}>
-          <Image
-            source={require('./assets/hero.png')}
-            style={{ width: '100%', height: 440, borderRadius: 22 }}
-            resizeMode="cover"
-          />
-        </View>
-      </View>
-    </View>
-  );
-}
-
-// ─── Stats banner ─────────────────────────────────────────────────────────────
-
-function StatsBanner() {
-  const { isDesktop, pad } = useLayout();
-  const stats = [
-    { value: '500+',  label: 'Small businesses served' },
-    { value: '98%',   label: 'Customer satisfaction' },
-    { value: '40%',   label: 'Average cost reduction' },
-    { value: '12hrs', label: 'Saved per week, per business' },
-  ];
-  return (
-    <View style={{ paddingHorizontal: pad, marginBottom: 90 }}>
-      <View style={{
-        backgroundColor: C.card,
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor: C.border,
-        padding: isDesktop ? 40 : 32,
-        flexDirection: isDesktop ? 'row' : 'column',
-        gap: isDesktop ? 0 : 28,
-      }}>
-        {stats.map((s, i) => (
-          <React.Fragment key={i}>
-            {i > 0 && isDesktop && <Divider vertical />}
-            <View style={{ flex: isDesktop ? 1 : undefined, alignItems: 'center', gap: 6 }}>
-              <Text style={{ color: C.blue, fontSize: isDesktop ? 46 : 36, fontWeight: '900', letterSpacing: -1 }}>
-                {s.value}
-              </Text>
-              <Text style={{ color: C.muted, fontSize: 13, textAlign: 'center' }}>{s.label}</Text>
-            </View>
-          </React.Fragment>
-        ))}
-      </View>
-    </View>
-  );
-}
-
-// ─── Services ─────────────────────────────────────────────────────────────────
-
-const SERVICES = [
-  {
-    icon: '📈',
-    color: C.blue,
-    dim: C.blueDim,
-    title: 'Sales Optimization',
-    description: 'AI-driven tools that score your leads, automate follow-ups, and close deals faster — even while you sleep.',
-    features: [
-      'Smart lead scoring & prioritization',
-      'Automated email & SMS sequences',
-      'CRM sync and pipeline visibility',
-      'Sales forecasting & performance reports',
-      'AI chat widget for your website',
-    ],
-    placeholder: 'Sales AI — laptop screen showing a dark CRM dashboard with colored lead pipeline, charts, and AI score badges',
-  },
-  {
-    icon: '👥',
-    color: C.purple,
-    dim: C.purpleDim,
-    title: 'HR & Payroll',
-    description: 'Onboard staff, manage schedules, and run payroll in one click. Stay compliant without the admin overhead.',
-    features: [
-      'One-click payroll processing',
-      'Automated tax calculations & filing',
-      'Employee self-service portal',
-      'Smart shift scheduling & time tracking',
-      'Compliance alerts & HR document storage',
-    ],
-    placeholder: 'HR Dashboard — employee roster grid, payroll summary card, and tax status indicators on dark modern UI',
-  },
-  {
-    icon: '📊',
-    color: C.teal,
-    dim: C.tealDim,
-    title: 'Smart Accounting',
-    description: 'Connect your bank, auto-categorize transactions, and generate reports instantly. No accounting degree needed.',
-    features: [
-      'Bank & credit card sync',
-      'AI auto-categorization of transactions',
-      'Invoicing & accounts receivable tracking',
-      'Real-time P&L, cash flow, and balance sheet',
-      'Tax-ready exports and filing support',
-    ],
-    placeholder: 'Accounting Dashboard — colorful bar charts showing monthly profit/loss, donut chart for expense categories, cash flow graph',
-  },
-];
-
-function ServiceCard({ service }) {
-  const { isDesktop } = useLayout();
-  const { icon, color, dim, title, description, features, placeholder } = service;
-  return (
-    <View style={{
-      flex: isDesktop ? 1 : undefined,
-      backgroundColor: C.card,
-      borderRadius: 22,
-      borderWidth: 1,
-      borderColor: C.border,
-      overflow: 'hidden',
-      marginBottom: isDesktop ? 0 : 24,
-    }}>
-      <Placeholder height={210} label={placeholder} borderRadius={0} />
-      <View style={{ padding: 28, gap: 18 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          <View style={{
-            width: 46, height: 46, borderRadius: 13,
-            backgroundColor: dim,
-            alignItems: 'center', justifyContent: 'center',
-          }}>
-            <Text style={{ fontSize: 22 }}>{icon}</Text>
-          </View>
-          <Text style={{ color: C.text, fontSize: 21, fontWeight: '800' }}>{title}</Text>
-        </View>
-
-        <Text style={{ color: C.mid, fontSize: 14, lineHeight: 24 }}>{description}</Text>
-
-        <View style={{ gap: 9 }}>
-          {features.map((f, i) => (
-            <View key={i} style={{ flexDirection: 'row', alignItems: 'center', gap: 9 }}>
-              <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: color, flexShrink: 0 }} />
-              <Text style={{ color: C.mid, fontSize: 13, flex: 1 }}>{f}</Text>
-            </View>
-          ))}
-        </View>
-
-        <TouchableOpacity style={{
-          marginTop: 6,
-          borderRadius: 11,
+      {/* CTA */}
+      <TouchableOpacity
+        onPress={() => onNav('contact')}
+        style={{
+          borderRadius: 9,
           borderWidth: 1,
-          borderColor: color + '55',
-          backgroundColor: dim,
-          paddingVertical: 13,
-          alignItems: 'center',
-        }}>
-          <Text style={{ color, fontSize: 14, fontWeight: '700' }}>Learn More  →</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
-
-function Services() {
-  const { isDesktop, pad } = useLayout();
-  return (
-    <View style={{ paddingHorizontal: pad, marginBottom: 90 }}>
-      <SectionHeading
-        badge="OUR SERVICES"
-        title="Three pillars of business automation"
-        subtitle="From closing deals to cutting paychecks to balancing books — we handle the work that slows you down."
-        center
-      />
-      <View style={{ flexDirection: isDesktop ? 'row' : 'column', gap: 24 }}>
-        {SERVICES.map((s, i) => <ServiceCard key={i} service={s} />)}
-      </View>
-    </View>
-  );
-}
-
-// ─── How it works ─────────────────────────────────────────────────────────────
-
-const STEPS = [
-  {
-    n: '01',
-    title: 'Connect Your Tools',
-    description: 'Link your existing software — QuickBooks, Stripe, your payroll provider, or your CRM. We integrate with 100+ tools out of the box.',
-  },
-  {
-    n: '02',
-    title: 'Configure Your Workflows',
-    description: 'Choose which tasks to automate. Our AI suggests the highest-impact workflows for your specific industry and team size.',
-  },
-  {
-    n: '03',
-    title: 'Watch It Run',
-    description: 'Your automation goes live. Monitor time savings, track performance, and refine workflows as your business grows.',
-  },
-];
-
-function HowItWorks() {
-  const { isDesktop, pad } = useLayout();
-  return (
-    <View style={{ backgroundColor: C.surface, paddingHorizontal: pad, paddingVertical: 80, marginBottom: 90 }}>
-      <SectionHeading
-        badge="HOW IT WORKS"
-        title="Up and running in minutes"
-        subtitle="No IT team required. No complicated setup. Just connect, configure, and let the AI take it from there."
-        center
-      />
-      <View style={{ flexDirection: isDesktop ? 'row' : 'column', gap: 20 }}>
-        {STEPS.map((s, i) => (
-          <View key={i} style={{
-            flex: isDesktop ? 1 : undefined,
-            backgroundColor: C.card,
-            borderRadius: 18,
-            borderWidth: 1,
-            borderColor: C.border,
-            padding: 30,
-            gap: 16,
-            marginBottom: isDesktop ? 0 : 16,
-          }}>
-            <View style={{
-              width: 48, height: 48, borderRadius: 13,
-              backgroundColor: C.blue,
-              alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Text style={{ color: '#fff', fontSize: 16, fontWeight: '900' }}>{s.n}</Text>
-            </View>
-            <Text style={{ color: C.text, fontSize: 19, fontWeight: '800' }}>{s.title}</Text>
-            <Text style={{ color: C.mid, fontSize: 14, lineHeight: 24 }}>{s.description}</Text>
-          </View>
-        ))}
-      </View>
-
-      <View style={{ marginTop: 48 }}>
-        <Placeholder
-          height={320}
-          label="Workflow diagram — three-step visual showing tool icons connected by animated arrows into a central AI hub, dark background"
-          borderRadius={18}
-        />
-      </View>
-    </View>
-  );
-}
-
-// ─── Testimonials ─────────────────────────────────────────────────────────────
-
-const TESTIMONIALS = [
-  {
-    quote: 'We cut payroll processing from 4 hours to 15 minutes. SmartBiz AI paid for itself in the very first month.',
-    name: 'Maria T.',
-    role: 'Owner',
-    company: 'Bloom & Co Bakery',
-    avatarLabel: 'Professional headshot — woman, 40s, warm smile, bakery owner',
-  },
-  {
-    quote: 'The sales automation alone brought in 3 new clients in 2 weeks. The AI follow-up sequences are genuinely impressive.',
-    name: 'James R.',
-    role: 'Founder',
-    company: 'Redline HVAC',
-    avatarLabel: 'Professional headshot — man, 35, confident, trades business owner',
-  },
-  {
-    quote: "I used to spend every Sunday on bookkeeping. Now I spend it with my family. The accounting module is flawless.",
-    name: 'Sofia L.',
-    role: 'CEO',
-    company: 'Luma Design Studio',
-    avatarLabel: 'Professional headshot — woman, 30s, creative professional, studio owner',
-  },
-];
-
-function Testimonials() {
-  const { isDesktop, pad } = useLayout();
-  return (
-    <View style={{ paddingHorizontal: pad, marginBottom: 90 }}>
-      <SectionHeading
-        badge="TESTIMONIALS"
-        title="Businesses like yours are saving thousands"
-        center
-      />
-      <View style={{ flexDirection: isDesktop ? 'row' : 'column', gap: 22 }}>
-        {TESTIMONIALS.map((t, i) => (
-          <View key={i} style={{
-            flex: isDesktop ? 1 : undefined,
-            backgroundColor: C.card,
-            borderRadius: 18,
-            borderWidth: 1,
-            borderColor: C.border,
-            padding: 28,
-            gap: 18,
-            marginBottom: isDesktop ? 0 : 16,
-          }}>
-            <View style={{ flexDirection: 'row', gap: 2 }}>
-              {[1,2,3,4,5].map(j => (
-                <Text key={j} style={{ color: C.gold, fontSize: 15 }}>★</Text>
-              ))}
-            </View>
-            <Text style={{ color: C.mid, fontSize: 14, lineHeight: 25, fontStyle: 'italic', flex: 1 }}>
-              "{t.quote}"
-            </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-              <AvatarPlaceholder size={46} label={t.avatarLabel} />
-              <View>
-                <Text style={{ color: C.text, fontSize: 14, fontWeight: '700' }}>{t.name}</Text>
-                <Text style={{ color: C.muted, fontSize: 12 }}>{t.role} · {t.company}</Text>
-              </View>
-            </View>
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-}
-
-// ─── Pricing ──────────────────────────────────────────────────────────────────
-
-const PLANS = [
-  {
-    name: 'Starter',
-    price: '49',
-    description: 'For solo operators and micro-teams taking their first automation steps.',
-    features: [
-      '1 automation module',
-      'Up to 5 users',
-      'Core reporting dashboard',
-      'Email support',
-    ],
-    highlighted: false,
-  },
-  {
-    name: 'Growth',
-    price: '129',
-    description: 'The most popular plan — all three modules for a growing small business.',
-    features: [
-      'All 3 automation modules',
-      'Up to 25 users',
-      'Advanced analytics & forecasting',
-      'Priority email & chat support',
-      'API access & webhooks',
-    ],
-    highlighted: true,
-  },
-  {
-    name: 'Enterprise',
-    price: '299',
-    description: 'Custom workflows and white-glove support for established businesses.',
-    features: [
-      'Unlimited automation modules',
-      'Unlimited users',
-      'Custom integrations & workflows',
-      'Dedicated account manager',
-      '99.9% SLA guarantee',
-      'Onboarding & migration support',
-    ],
-    highlighted: false,
-  },
-];
-
-function PricingCard({ plan }) {
-  const { name, price, description, features, highlighted } = plan;
-  const textColor = highlighted ? '#fff' : C.text;
-  const mutedColor = highlighted ? 'rgba(255,255,255,0.7)' : C.muted;
-
-  return (
-    <View style={{
-      flex: 1,
-      backgroundColor: highlighted ? C.blue : C.card,
-      borderRadius: 22,
-      borderWidth: highlighted ? 0 : 1,
-      borderColor: C.border,
-      padding: 32,
-      gap: 22,
-    }}>
-      <View style={{ gap: 10 }}>
-        <Text style={{ color: mutedColor, fontSize: 12, fontWeight: '800', letterSpacing: 1.2, textTransform: 'uppercase' }}>
-          {name}
-        </Text>
-        <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 4 }}>
-          <Text style={{ color: textColor, fontSize: 48, fontWeight: '900', letterSpacing: -2 }}>${price}</Text>
-          <Text style={{ color: mutedColor, fontSize: 14, marginBottom: 12 }}>/month</Text>
-        </View>
-        <Text style={{ color: highlighted ? 'rgba(255,255,255,0.8)' : C.mid, fontSize: 14, lineHeight: 22 }}>
-          {description}
-        </Text>
-      </View>
-
-      <Divider />
-
-      <View style={{ gap: 12 }}>
-        {features.map((f, i) => (
-          <View key={i} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <View style={{
-              width: 20, height: 20, borderRadius: 10,
-              backgroundColor: highlighted ? 'rgba(255,255,255,0.22)' : C.blueDim,
-              alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Text style={{ color: highlighted ? '#fff' : C.blue, fontSize: 11, fontWeight: '900' }}>✓</Text>
-            </View>
-            <Text style={{ color: highlighted ? 'rgba(255,255,255,0.88)' : C.mid, fontSize: 13, flex: 1 }}>{f}</Text>
-          </View>
-        ))}
-      </View>
-
-      <TouchableOpacity style={{
-        marginTop: 4,
-        borderRadius: 13,
-        paddingVertical: 15,
-        alignItems: 'center',
-        backgroundColor: highlighted ? '#fff' : 'transparent',
-        borderWidth: highlighted ? 0 : 1.5,
-        borderColor: C.borderHi,
-      }}>
-        <Text style={{ color: C.blue, fontSize: 15, fontWeight: '800' }}>
-          {highlighted ? 'Get Started' : 'Start Free Trial'}
+          borderColor: C.teal,
+          paddingHorizontal: isTablet ? 18 : 12,
+          paddingVertical: 11,
+        }}
+      >
+        <Text style={{ color: C.text, fontWeight: '800', fontSize: isTablet ? 14 : 12 }}>
+          Book Free Call
         </Text>
       </TouchableOpacity>
-    </View>
-  );
-}
-
-function Pricing() {
-  const { isDesktop, pad } = useLayout();
-  return (
-    <View style={{ paddingHorizontal: pad, marginBottom: 90 }}>
-      <SectionHeading
-        badge="PRICING"
-        title="Simple, transparent pricing"
-        subtitle="No hidden fees. No long-term contracts. Cancel anytime."
-        center
-      />
-      <View style={{
-        flexDirection: isDesktop ? 'row' : 'column',
-        gap: 22,
-        alignItems: isDesktop ? 'flex-start' : 'stretch',
-      }}>
-        {PLANS.map((p, i) => <PricingCard key={i} plan={p} />)}
-      </View>
-    </View>
-  );
-}
-
-// ─── Final CTA ────────────────────────────────────────────────────────────────
-
-function FinalCTA() {
-  const { isDesktop, pad } = useLayout();
-  return (
-    <View style={{ paddingHorizontal: pad, marginBottom: 90 }}>
-      <View style={{
-        backgroundColor: C.blue,
-        borderRadius: 26,
-        padding: isDesktop ? 72 : 44,
-        alignItems: 'center',
-        gap: 22,
-      }}>
-        <Text style={{
-          color: '#fff',
-          fontSize: isDesktop ? 46 : 30,
-          fontWeight: '900',
-          textAlign: 'center',
-          maxWidth: 520,
-          lineHeight: isDesktop ? 56 : 40,
-          letterSpacing: -0.8,
-        }}>
-          Ready to automate your business?
-        </Text>
-        <Text style={{
-          color: 'rgba(255,255,255,0.78)',
-          fontSize: 17, lineHeight: 28,
-          textAlign: 'center', maxWidth: 460,
-        }}>
-          Join 500+ small businesses saving time and money with SmartBiz AI. No credit card required to get started.
-        </Text>
-        <View style={{ flexDirection: 'row', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <TouchableOpacity style={{
-            backgroundColor: '#fff', borderRadius: 13,
-            paddingHorizontal: 30, paddingVertical: 16,
-          }}>
-            <Text style={{ color: C.blue, fontSize: 16, fontWeight: '800' }}>Start Free Trial</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{
-            borderRadius: 13, paddingHorizontal: 30, paddingVertical: 16,
-            borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.38)',
-          }}>
-            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '700' }}>Contact Sales</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
     </View>
   );
 }
@@ -747,183 +261,729 @@ function FinalCTA() {
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 function Footer() {
-  const { isDesktop, pad } = useLayout();
-  const cols = [
-    { heading: 'Product',  links: ['Sales AI', 'HR & Payroll', 'Accounting', 'Integrations', 'Changelog'] },
-    { heading: 'Company',  links: ['About', 'Blog', 'Careers', 'Contact'] },
-    { heading: 'Legal',    links: ['Privacy Policy', 'Terms of Service', 'Security', 'Cookie Policy'] },
-  ];
+  const { pad } = useLayout();
   return (
     <View style={{
-      paddingHorizontal: pad,
-      paddingTop: 56,
-      paddingBottom: 40,
       borderTopWidth: 1,
       borderTopColor: C.border,
-      gap: 36,
+      paddingHorizontal: pad,
+      paddingVertical: 30,
     }}>
-      <View style={{
-        flexDirection: isDesktop ? 'row' : 'column',
-        justifyContent: 'space-between',
-        gap: 36,
-      }}>
-        <View style={{ gap: 14, maxWidth: 280 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <View style={{ width: 34, height: 34, borderRadius: 9, backgroundColor: C.blue, alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ color: '#fff', fontSize: 16, fontWeight: '900' }}>S</Text>
-            </View>
-            <Text style={{ color: C.text, fontSize: 19, fontWeight: '800', letterSpacing: -0.3 }}>
-              SmartBiz<Text style={{ color: C.blue }}>AI</Text>
-            </Text>
-          </View>
-          <Text style={{ color: C.muted, fontSize: 13, lineHeight: 22 }}>
-            Intelligent automation for small businesses. Sales, payroll, and accounting — simplified with AI.
-          </Text>
-        </View>
-
-        {isDesktop && (
-          <View style={{ flexDirection: 'row', gap: 64 }}>
-            {cols.map(col => (
-              <View key={col.heading} style={{ gap: 12 }}>
-                <Text style={{ color: C.text, fontSize: 13, fontWeight: '700' }}>{col.heading}</Text>
-                {col.links.map(link => (
-                  <TouchableOpacity key={link}>
-                    <Text style={{ color: C.muted, fontSize: 13 }}>{link}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            ))}
-          </View>
-        )}
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+        <Text style={{ color: C.muted, fontSize: 13 }}>© 2026 AiSmartBiz</Text>
+        <Text style={{ color: C.muted, fontSize: 13 }}>Practical AI systems for small business.</Text>
+        <Text style={{ color: C.muted, fontSize: 13, textAlign: 'right', flex: 1 }}>
+          Tell us how your business works — we'll tell you where we can make it faster.
+        </Text>
       </View>
+    </View>
+  );
+}
 
-      <Divider />
-      <Text style={{ color: C.muted, fontSize: 12, textAlign: 'center' }}>
-        © 2025 SmartBiz AI. All rights reserved.
+// ─── Page hero ────────────────────────────────────────────────────────────────
+
+function PageHero({ eyebrow, title, lead }) {
+  const { pad } = useLayout();
+  return (
+    <View style={{ paddingHorizontal: pad, paddingTop: 70, paddingBottom: 36, alignItems: 'center' }}>
+      <Eyebrow>{eyebrow}</Eyebrow>
+      <Text style={{
+        color: C.text,
+        fontSize: 42,
+        fontWeight: '900',
+        letterSpacing: -1.4,
+        textAlign: 'center',
+        maxWidth: 780,
+        marginBottom: 18,
+        lineHeight: 52,
+      }}>
+        {title}
+      </Text>
+      <Text style={{
+        color: C.mid,
+        fontSize: 18,
+        lineHeight: 30,
+        textAlign: 'center',
+        maxWidth: 680,
+      }}>
+        {lead}
       </Text>
     </View>
   );
 }
 
-// ─── About page ───────────────────────────────────────────────────────────────
+// ─── HOME PAGE ────────────────────────────────────────────────────────────────
 
-function AboutPage() {
+function HomePage({ onNav }) {
   const { isDesktop, pad } = useLayout();
   return (
     <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-      {/* Hero band */}
-      <View style={{ paddingHorizontal: pad, paddingTop: 72, paddingBottom: 80 }}>
-        <View style={{
-          flexDirection: isDesktop ? 'row' : 'column',
-          gap: isDesktop ? 72 : 48,
-          alignItems: isDesktop ? 'center' : 'stretch',
-        }}>
-          {/* Photo */}
-          <View style={{ alignItems: isDesktop ? 'flex-start' : 'center' }}>
-            <View style={{
-              borderRadius: 24,
-              borderWidth: 2,
-              borderColor: C.borderHi,
-              overflow: 'hidden',
-              width: isDesktop ? 340 : '100%',
-              maxWidth: 380,
-            }}>
-              <Image
-                source={require('./assets/BizOwners.jpg')}
-                style={{ width: '100%', aspectRatio: 844 / 973 }}
-                resizeMode="cover"
-              />
-            </View>
+      {/* Hero */}
+      <View style={{
+        paddingHorizontal: pad,
+        paddingTop: 72,
+        paddingBottom: 64,
+        flexDirection: isDesktop ? 'row' : 'column',
+        gap: 48,
+        alignItems: 'center',
+      }}>
+        {/* Left text */}
+        <View style={{ flex: isDesktop ? 1.05 : undefined, gap: 20 }}>
+          <Eyebrow>Practical AI for owner-led teams</Eyebrow>
+          <Text style={{
+            color: C.text,
+            fontSize: isDesktop ? 66 : 40,
+            fontWeight: '900',
+            lineHeight: isDesktop ? 72 : 48,
+            letterSpacing: -2,
+          }}>
+            Your Business Already Works.{' '}
+            <Text style={{ color: C.teal }}>We Help It Move Faster.</Text>
+          </Text>
+          <Text style={{ color: C.mid, fontSize: 18, lineHeight: 30, maxWidth: 560 }}>
+            From lead response to scheduling, customer follow-up, and internal admin, we build practical AI systems that save your team time and reduce repetitive work.
+          </Text>
+          <View style={{ flexDirection: 'row', gap: 14, flexWrap: 'wrap', marginTop: 10 }}>
+            <CTAButton label="→ Book a Free 5-Minute Call" primary onPress={() => onNav('contact')} />
+            <CTAButton label="See How It Works" onPress={() => onNav('how-it-works')} />
           </View>
+          <Text style={{ color: C.mid, fontSize: 15, marginTop: 4 }}>
+            Tell me how your business works — I will tell you where we can make it faster.
+          </Text>
+        </View>
 
-          {/* Bio */}
-          <View style={{ flex: 1, gap: 24 }}>
-            <Badge text="ABOUT US" />
-            <Text style={{
-              color: C.text,
-              fontSize: isDesktop ? 46 : 32,
-              fontWeight: '900',
-              lineHeight: isDesktop ? 56 : 42,
-              letterSpacing: -0.8,
-            }}>
-              Built by small{'\n'}business owners,{'\n'}
-              <Text style={{ color: C.blue }}>for small business owners.</Text>
+        {/* Right visual */}
+        <View style={{
+          flex: isDesktop ? 0.95 : undefined,
+          width: isDesktop ? undefined : '100%',
+          borderRadius: 26,
+          borderWidth: 1,
+          borderColor: C.border,
+          overflow: 'hidden',
+          backgroundColor: C.card,
+        }}>
+          <Image
+            source={require('./assets/hero.png')}
+            style={{ width: '100%', height: isDesktop ? 360 : 240 }}
+            resizeMode="cover"
+          />
+          <View style={{
+            position: 'absolute',
+            bottom: 16,
+            left: 16,
+            right: 16,
+            backgroundColor: 'rgba(2,9,9,0.82)',
+            borderRadius: 16,
+            borderWidth: 1,
+            borderColor: 'rgba(16,200,170,0.32)',
+            padding: 18,
+          }}>
+            <Text style={{ color: C.text, fontSize: 17, fontWeight: '800', marginBottom: 6 }}>
+              Best fit: small businesses under 50 employees
             </Text>
-            <Text style={{ color: C.mid, fontSize: 16, lineHeight: 28 }}>
-              We started SmartBiz AI after spending years watching great small businesses struggle with the same administrative burdens that large corporations solved a decade ago with enterprise software costing hundreds of thousands of dollars.
+            <Text style={{ color: C.mid, fontSize: 13, lineHeight: 20 }}>
+              We learn your process first, then build around the places where speed, consistency, and follow-up matter most.
             </Text>
-            <Text style={{ color: C.mid, fontSize: 16, lineHeight: 28 }}>
-              Our mission is simple: bring the power of AI automation to the businesses that need it most — the ones where the owner is also the accountant, the HR manager, and the head of sales all at once.
-            </Text>
-
-            {/* Values row */}
-            <View style={{
-              flexDirection: isDesktop ? 'row' : 'column',
-              gap: 16,
-              marginTop: 8,
-            }}>
-              {[
-                { icon: '🎯', label: 'Mission-driven', desc: 'Every feature we ship solves a real pain point we heard from real owners.' },
-                { icon: '🔒', label: 'Trust first',    desc: 'Your financial data is encrypted, never sold, and always yours.' },
-                { icon: '⚡', label: 'Move fast',      desc: 'We ship improvements every week, guided by customer feedback.' },
-              ].map((v, i) => (
-                <View key={i} style={{
-                  flex: 1,
-                  backgroundColor: C.card,
-                  borderRadius: 16,
-                  borderWidth: 1,
-                  borderColor: C.border,
-                  padding: 20,
-                  gap: 8,
-                }}>
-                  <Text style={{ fontSize: 26 }}>{v.icon}</Text>
-                  <Text style={{ color: C.text, fontSize: 15, fontWeight: '700' }}>{v.label}</Text>
-                  <Text style={{ color: C.muted, fontSize: 13, lineHeight: 20 }}>{v.desc}</Text>
-                </View>
-              ))}
-            </View>
           </View>
         </View>
       </View>
 
-      {/* Team stat band */}
+      {/* Problem section */}
       <View style={{
-        backgroundColor: C.surface,
         paddingHorizontal: pad,
-        paddingVertical: 56,
-        marginBottom: 80,
-        gap: 40,
+        paddingVertical: 60,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(16,200,170,0.13)',
       }}>
-        <SectionHeading
-          badge="OUR STORY"
-          title="From spreadsheets to smart automation"
-          subtitle="SmartBiz AI was founded in 2023 out of a garage in Austin, TX. Today we serve over 500 businesses across the US, helping them reclaim their time and grow with confidence."
-          center
-        />
+        <View style={{ alignItems: 'center', marginBottom: 36 }}>
+          <Eyebrow>The Problem</Eyebrow>
+          <Text style={{
+            color: C.text,
+            fontSize: 36,
+            fontWeight: '900',
+            letterSpacing: -1,
+            textAlign: 'center',
+            marginBottom: 12,
+          }}>
+            Small teams lose speed in the same places.
+          </Text>
+          <Text style={{ color: C.mid, fontSize: 17, lineHeight: 28, textAlign: 'center', maxWidth: 620 }}>
+            Most small businesses are not broken. They are slowed down by repetitive work, missed handoffs, and follow-up that depends too much on memory.
+          </Text>
+        </View>
+        <ProblemGrid />
         <View style={{
-          flexDirection: isDesktop ? 'row' : 'column',
-          gap: 24,
+          marginTop: 24,
+          borderRadius: 18,
+          borderWidth: 1,
+          borderColor: 'rgba(16,200,170,0.36)',
+          backgroundColor: 'rgba(16,200,170,0.08)',
+          padding: 22,
+          alignItems: 'center',
         }}>
-          {[
-            { value: '2023',  label: 'Founded' },
-            { value: 'Austin', label: 'Headquartered' },
-            { value: '500+',  label: 'Customers served' },
-            { value: '12',    label: 'Team members' },
-          ].map((s, i) => (
-            <View key={i} style={{
-              flex: 1,
-              backgroundColor: C.card,
-              borderRadius: 18,
+          <Text style={{ color: C.text, fontSize: 20, fontWeight: '800', textAlign: 'center' }}>
+            Our job: find the friction, then remove it without disrupting what already works.
+          </Text>
+        </View>
+      </View>
+
+      <CTABox
+        title="Let's Talk About Your Business"
+        body="No pressure. No tech jargon. Just a quick conversation about how your business works, where your team may be losing time, and whether we can help."
+        btnLabel="Book a Free 5-Minute Call"
+        onPress={() => onNav('contact')}
+      />
+
+      <Footer />
+    </ScrollView>
+  );
+}
+
+// ─── PROBLEM PAGE ─────────────────────────────────────────────────────────────
+
+function ProblemPage({ onNav }) {
+  const { isDesktop, pad } = useLayout();
+  return (
+    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <PageHero
+        eyebrow="The Problem"
+        title="Small Teams Lose Speed in the Same Places."
+        lead="Most small businesses are not broken. They are slowed down by repetitive work, missed handoffs, and follow-up that depends too much on memory."
+      />
+
+      <View style={{
+        paddingHorizontal: pad,
+        paddingVertical: 40,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(16,200,170,0.13)',
+        flexDirection: isDesktop ? 'row' : 'column',
+        gap: 28,
+        alignItems: 'center',
+      }}>
+        <View style={{ flex: 1 }}>
+          <ProblemGrid />
+        </View>
+        <View style={{ flex: isDesktop ? 0.9 : undefined, width: isDesktop ? undefined : '100%' }}>
+          <Image
+            source={require('./assets/hero.png')}
+            style={{
+              width: '100%',
+              height: isDesktop ? 400 : 240,
+              borderRadius: 24,
               borderWidth: 1,
               borderColor: C.border,
-              padding: 28,
-              alignItems: 'center',
-              gap: 6,
+            }}
+            resizeMode="cover"
+          />
+        </View>
+      </View>
+
+      <CTABox
+        title="Where Is Your Team Losing Time?"
+        body="We'll listen first, then identify whether AI can help make the process faster, cleaner, and more consistent."
+        btnLabel="Book a Free 5-Minute Call"
+        onPress={() => onNav('contact')}
+      />
+
+      <Footer />
+    </ScrollView>
+  );
+}
+
+// ─── HOW IT WORKS PAGE ────────────────────────────────────────────────────────
+
+const STEPS = [
+  { n: '1', title: 'Sit Down With You',    body: 'We meet in person and learn how your business actually runs.' },
+  { n: '2', title: 'Find Bottlenecks',     body: 'We map lead flow, scheduling, follow-up, admin, and internal handoffs.' },
+  { n: '3', title: 'Build Where It Helps', body: 'We create practical AI systems only where they save time or improve consistency.' },
+  { n: '4', title: 'Support & Improve',    body: 'We monitor, adjust, and keep improving as your business changes.' },
+];
+
+function HowItWorksPage({ onNav }) {
+  const { isDesktop, isTablet, pad } = useLayout();
+  const cols = isDesktop ? 4 : isTablet ? 2 : 1;
+  return (
+    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <PageHero
+        eyebrow="How It Works"
+        title="We Listen First. Then We Build Only What Makes Sense."
+        lead="No pressure. No tech jargon. Just a practical conversation about what is working, what is not, and whether our tools can create value."
+      />
+
+      {/* Steps */}
+      <View style={{
+        paddingHorizontal: pad,
+        paddingVertical: 40,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(16,200,170,0.13)',
+      }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}>
+          {STEPS.map((s, i) => (
+            <View key={i} style={{
+              flex: cols === 4 ? 1 : undefined,
+              width: cols === 2 ? '47%' : cols === 1 ? '100%' : undefined,
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: C.border,
+              backgroundColor: C.card,
+              padding: 26,
             }}>
-              <Text style={{ color: C.blue, fontSize: 36, fontWeight: '900', letterSpacing: -1 }}>{s.value}</Text>
-              <Text style={{ color: C.muted, fontSize: 13 }}>{s.label}</Text>
+              <View style={{
+                width: 40, height: 40, borderRadius: 20,
+                borderWidth: 1, borderColor: C.border,
+                backgroundColor: C.tealDim,
+                alignItems: 'center', justifyContent: 'center',
+                marginBottom: 16,
+              }}>
+                <Text style={{ color: C.teal, fontWeight: '900', fontSize: 16 }}>{s.n}</Text>
+              </View>
+              <Text style={{ color: C.text, fontSize: 20, fontWeight: '800', marginBottom: 10 }}>{s.title}</Text>
+              <Text style={{ color: C.mid, fontSize: 14, lineHeight: 24 }}>{s.body}</Text>
             </View>
           ))}
+        </View>
+
+        {/* Quote */}
+        <View style={{
+          marginTop: 24,
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: C.border,
+          backgroundColor: C.card,
+          padding: 28,
+          alignItems: 'center',
+        }}>
+          <Text style={{ color: C.text, fontSize: 22, fontWeight: '800', textAlign: 'center', lineHeight: 34 }}>
+            We do not sell you technology you do not need. We learn your business first, then determine if and where our tools can actually create value.
+          </Text>
+        </View>
+      </View>
+
+      {/* Split: image + panel */}
+      <View style={{
+        paddingHorizontal: pad,
+        paddingVertical: 40,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(16,200,170,0.13)',
+        flexDirection: isDesktop ? 'row' : 'column',
+        gap: 28,
+        alignItems: 'center',
+      }}>
+        <Image
+          source={require('./assets/BizOwners.jpg')}
+          style={{
+            flex: isDesktop ? 1 : undefined,
+            width: isDesktop ? undefined : '100%',
+            height: isDesktop ? 400 : 260,
+            borderRadius: 24,
+            borderWidth: 1,
+            borderColor: C.border,
+          }}
+          resizeMode="cover"
+        />
+        <View style={{
+          flex: isDesktop ? 1 : undefined,
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: C.border,
+          backgroundColor: C.card,
+          padding: 30,
+        }}>
+          <Text style={{ color: C.text, fontSize: 26, fontWeight: '800', marginBottom: 14 }}>
+            What the first conversation is really about
+          </Text>
+          <Text style={{ color: C.mid, fontSize: 15, lineHeight: 26, marginBottom: 14 }}>
+            We are not trying to force a tool into your business. We are trying to understand how your team already works.
+          </Text>
+          <CheckItem>What feels slow or repetitive?</CheckItem>
+          <CheckItem>Where do leads, customers, or tasks get stuck?</CheckItem>
+          <CheckItem>What already works and should not be disrupted?</CheckItem>
+          <CheckItem>Where could a simple system create real value?</CheckItem>
+        </View>
+      </View>
+
+      <CTABox
+        title="Let's Talk About Your Business"
+        body="No pressure. No tech jargon. Just a quick conversation about how your business works, where your team may be losing time, and whether we can help."
+        btnLabel="Book a Free 5-Minute Call"
+        onPress={() => onNav('contact')}
+      />
+
+      <Footer />
+    </ScrollView>
+  );
+}
+
+// ─── SERVICES PAGE ────────────────────────────────────────────────────────────
+
+const PLANS = [
+  {
+    name: 'Bronze',
+    price: '$499',
+    per: 'per month',
+    fit: 'Best for smaller businesses needing one core workflow improved.',
+    features: ['1 primary workflow', 'Maintenance', 'Troubleshooting', 'Minor edits', 'Email support'],
+    featured: false,
+  },
+  {
+    name: 'Silver',
+    price: '$999',
+    per: 'per month',
+    fit: 'Most businesses land here — several key workflows improved together.',
+    features: ['Up to 3 workflows', 'CRM integrations', 'Monthly optimization', 'Performance review', 'Strategy check-in'],
+    featured: true,
+  },
+  {
+    name: 'Gold',
+    price: '$1,999',
+    per: 'per month',
+    fit: 'Full-service automation partnership for teams that want hands-on support.',
+    features: ['Multi-workflow systems', 'Priority support', 'Custom builds', 'Strategy consulting', '5 in-office hrs/mo'],
+    featured: false,
+  },
+];
+
+function ServicesPage({ onNav }) {
+  const { isDesktop, isTablet, pad } = useLayout();
+  const cols = isDesktop ? 3 : isTablet ? 2 : 1;
+  return (
+    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <PageHero
+        eyebrow="Services & Pricing"
+        title="Simple Packages After We Understand Your Workflow."
+        lead="Every engagement starts with a one-time Business Analysis & Workflow Setup so we understand your operation before building anything."
+      />
+
+      <View style={{
+        paddingHorizontal: pad,
+        paddingVertical: 40,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(16,200,170,0.13)',
+      }}>
+        {/* Setup fee */}
+        <View style={{
+          borderRadius: 22,
+          borderWidth: 1,
+          borderColor: C.borderHi,
+          backgroundColor: 'rgba(5,26,24,0.9)',
+          padding: 30,
+          flexDirection: isTablet ? 'row' : 'column',
+          justifyContent: 'space-between',
+          alignItems: isTablet ? 'center' : 'flex-start',
+          gap: 20,
+          marginBottom: 28,
+        }}>
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: C.text, fontSize: 28, fontWeight: '900', marginBottom: 10 }}>
+              Business Analysis & Workflow Setup
+            </Text>
+            <Text style={{ color: C.mid, fontSize: 15, lineHeight: 26 }}>
+              We do a deep dive into how your business currently operates, identify time-loss and repetitive tasks, map your lead flow, customer flow, and admin bottlenecks, then create the implementation roadmap.
+            </Text>
+          </View>
+          <View style={{ alignItems: isTablet ? 'flex-end' : 'flex-start' }}>
+            <Text style={{ color: C.teal, fontSize: 52, fontWeight: '900', letterSpacing: -2 }}>$1,499</Text>
+            <Text style={{ color: C.mid, fontSize: 15 }}>one-time setup</Text>
+          </View>
+        </View>
+
+        {/* Pricing cards */}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20, alignItems: 'flex-start' }}>
+          {PLANS.map((plan, i) => (
+            <View key={i} style={{
+              flex: cols === 3 ? 1 : undefined,
+              width: cols === 2 ? '47%' : cols === 1 ? '100%' : undefined,
+              borderRadius: 22,
+              borderWidth: 1,
+              borderColor: plan.featured ? C.borderHi : C.border,
+              backgroundColor: C.card,
+              padding: 28,
+              position: 'relative',
+              ...(plan.featured ? { transform: [{ translateY: -8 }] } : {}),
+            }}>
+              {plan.featured && (
+                <View style={{
+                  position: 'absolute',
+                  top: 16,
+                  right: 16,
+                  backgroundColor: C.tealDim,
+                  borderRadius: 999,
+                  borderWidth: 1,
+                  borderColor: C.border,
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                }}>
+                  <Text style={{ color: C.teal, fontSize: 11, fontWeight: '900' }}>Most Popular</Text>
+                </View>
+              )}
+              <Text style={{ color: C.text, fontSize: 28, fontWeight: '900', marginBottom: 6 }}>{plan.name}</Text>
+              <Text style={{ color: C.teal, fontSize: 40, fontWeight: '900', letterSpacing: -1, marginBottom: 2 }}>
+                {plan.price}
+              </Text>
+              <Text style={{ color: C.muted, fontSize: 14, marginBottom: 16 }}>{plan.per}</Text>
+              <Text style={{ color: C.mid, fontSize: 14, lineHeight: 22, marginBottom: 20, minHeight: 48 }}>{plan.fit}</Text>
+              <Divider />
+              <View style={{ marginTop: 16, gap: 2 }}>
+                {plan.features.map((f, j) => <CheckItem key={j}>{f}</CheckItem>)}
+              </View>
+            </View>
+          ))}
+        </View>
+
+        <View style={{
+          marginTop: 24,
+          borderRadius: 18,
+          borderWidth: 1,
+          borderColor: C.border,
+          backgroundColor: C.card,
+          padding: 22,
+          alignItems: 'center',
+        }}>
+          <Text style={{ color: C.mid, fontSize: 15, textAlign: 'center', lineHeight: 26 }}>
+            <Text style={{ color: C.text, fontWeight: '700' }}>Common automations: </Text>
+            missed-call text back, lead follow-up, appointment reminders, review requests, CRM updates, and admin workflows.
+          </Text>
+        </View>
+      </View>
+
+      <CTABox
+        title="Not Sure Which Plan Fits?"
+        body="That is exactly what the first call is for. Tell us how your business works and we'll help determine where, if anywhere, our tools can create value."
+        btnLabel="Book a Free 5-Minute Call"
+        onPress={() => onNav('contact')}
+      />
+
+      <Footer />
+    </ScrollView>
+  );
+}
+
+// ─── WHY US PAGE ─────────────────────────────────────────────────────────────
+
+const WHY_CARDS = [
+  { icon: '🪄', title: 'Under 50 Employees', body: 'Designed for small teams where time, speed, and communication matter every day.' },
+  { icon: '🤝', title: 'Hands-On',           body: 'We are relationship-driven and close enough to actually learn the business.' },
+  { icon: '🚀', title: 'Fast & Flexible',    body: 'What we lack in size, we make up for with agility and responsiveness.' },
+  { icon: '🎯', title: 'Results-Driven',     body: 'We focus on practical outcomes: saving time, improving follow-up, and reducing repetitive work.' },
+];
+
+function WhyUsPage({ onNav }) {
+  const { isDesktop, isTablet, pad } = useLayout();
+  return (
+    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <PageHero
+        eyebrow="Why AiSmartBiz"
+        title="Small, Family-Oriented, Eager to Learn, and Results-Driven."
+        lead="We are not here to sell you technology you do not need. We are here to understand your business, find friction, and help your team move faster where it actually matters."
+      />
+
+      <View style={{
+        paddingHorizontal: pad,
+        paddingVertical: 40,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(16,200,170,0.13)',
+        flexDirection: isDesktop ? 'row' : 'column',
+        gap: 24,
+      }}>
+        {/* Big left panel */}
+        <View style={{
+          flex: isDesktop ? 1 : undefined,
+          borderRadius: 24,
+          borderWidth: 1,
+          borderColor: C.border,
+          backgroundColor: C.card,
+          overflow: 'hidden',
+        }}>
+          <Image
+            source={require('./assets/BizOwners.jpg')}
+            style={{ width: '100%', height: isDesktop ? 320 : 240 }}
+            resizeMode="cover"
+          />
+          <View style={{ padding: 28 }}>
+            <Text style={{ color: C.text, fontSize: 26, fontWeight: '800', marginBottom: 12 }}>
+              Built for owner-led teams.
+            </Text>
+            <Text style={{ color: C.mid, fontSize: 15, lineHeight: 26 }}>
+              We work best with small businesses where the owner still knows the day-to-day operation, cares about the people, and wants the team to move faster without turning the business upside down.
+            </Text>
+          </View>
+        </View>
+
+        {/* Right card grid */}
+        <View style={{
+          flex: isDesktop ? 1 : undefined,
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: 16,
+        }}>
+          {WHY_CARDS.map((c, i) => (
+            <View key={i} style={{
+              width: isTablet ? '47%' : '100%',
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: C.border,
+              backgroundColor: C.card,
+              padding: 24,
+              minHeight: 180,
+            }}>
+              <Text style={{ fontSize: 30, marginBottom: 12 }}>{c.icon}</Text>
+              <Text style={{ color: C.text, fontSize: 19, fontWeight: '800', marginBottom: 8 }}>{c.title}</Text>
+              <Text style={{ color: C.mid, fontSize: 14, lineHeight: 22 }}>{c.body}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+
+      {/* Values strip */}
+      <View style={{
+        paddingHorizontal: pad,
+        paddingVertical: 24,
+        marginBottom: 16,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(16,200,170,0.13)',
+      }}>
+        {[
+          '✓  Built for small businesses under 50 employees',
+          '✓  Hands-on and relationship-driven',
+          '✓  Fast, flexible, and practical',
+          '✓  We learn before we build',
+        ].map((line, i) => (
+          <Text key={i} style={{ color: C.mid, fontSize: 18, fontWeight: '700', marginBottom: 12 }}>
+            {line}
+          </Text>
+        ))}
+      </View>
+
+      <CTABox
+        title="Let's Talk About Your Business"
+        body="No pressure. No tech jargon. Just a quick conversation about how your business works, where your team may be losing time, and whether we can help."
+        btnLabel="Book a Free 5-Minute Call"
+        onPress={() => onNav('contact')}
+      />
+
+      <Footer />
+    </ScrollView>
+  );
+}
+
+// ─── CONTACT PAGE ─────────────────────────────────────────────────────────────
+
+function ContactPage() {
+  const { isDesktop, pad } = useLayout();
+  const [form, setForm] = useState({ name: '', business: '', contact: '', improve: '', message: '' });
+
+  return (
+    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <PageHero
+        eyebrow="Free 5-Minute Call"
+        title="Tell Us How Your Business Works."
+        lead="No pressure. No tech jargon. Just a quick conversation about what's working, what's not, and whether AiSmartBiz can help your team move faster."
+      />
+
+      <View style={{
+        paddingHorizontal: pad,
+        paddingVertical: 40,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(16,200,170,0.13)',
+        flexDirection: isDesktop ? 'row' : 'column',
+        gap: 24,
+        marginBottom: 60,
+      }}>
+        {/* Left panel */}
+        <View style={{
+          flex: 1,
+          borderRadius: 22,
+          borderWidth: 1,
+          borderColor: C.border,
+          backgroundColor: C.card,
+          padding: 30,
+        }}>
+          <Text style={{ color: C.text, fontSize: 24, fontWeight: '800', marginBottom: 14 }}>
+            What we want to learn
+          </Text>
+          <Text style={{ color: C.mid, fontSize: 15, lineHeight: 26, marginBottom: 20 }}>
+            We are genuinely interested in learning how your business operates before suggesting anything.
+          </Text>
+          <CheckItem>What part of the business feels slow or repetitive?</CheckItem>
+          <CheckItem>Where are leads, customers, or tasks getting stuck?</CheckItem>
+          <CheckItem>What is already working and should stay untouched?</CheckItem>
+          <CheckItem>Can our current tools provide real value to your team?</CheckItem>
+        </View>
+
+        {/* Right form */}
+        <View style={{
+          flex: 1,
+          borderRadius: 22,
+          borderWidth: 1,
+          borderColor: C.border,
+          backgroundColor: C.card,
+          padding: 30,
+          gap: 12,
+        }}>
+          <Text style={{ color: C.text, fontSize: 24, fontWeight: '800', marginBottom: 6 }}>
+            Request the Call
+          </Text>
+
+          {[
+            { key: 'name',     placeholder: 'Name' },
+            { key: 'business', placeholder: 'Business name' },
+            { key: 'contact',  placeholder: 'Phone or email' },
+          ].map(field => (
+            <TextInput
+              key={field.key}
+              placeholder={field.placeholder}
+              placeholderTextColor={C.muted}
+              value={form[field.key]}
+              onChangeText={v => setForm(f => ({ ...f, [field.key]: v }))}
+              style={{
+                borderWidth: 1,
+                borderColor: C.border,
+                borderRadius: 12,
+                padding: 14,
+                color: C.text,
+                backgroundColor: 'rgba(1,9,9,0.8)',
+                fontSize: 15,
+              }}
+            />
+          ))}
+
+          <View style={{
+            borderWidth: 1,
+            borderColor: C.border,
+            borderRadius: 12,
+            padding: 14,
+            backgroundColor: 'rgba(1,9,9,0.8)',
+          }}>
+            <Text style={{ color: form.improve ? C.text : C.muted, fontSize: 15 }}>
+              {form.improve || 'What do you most want to improve?'}
+            </Text>
+          </View>
+
+          <TextInput
+            placeholder="Briefly tell us what feels slow, repetitive, or hard to keep up with."
+            placeholderTextColor={C.muted}
+            value={form.message}
+            onChangeText={v => setForm(f => ({ ...f, message: v }))}
+            multiline
+            numberOfLines={4}
+            style={{
+              borderWidth: 1,
+              borderColor: C.border,
+              borderRadius: 12,
+              padding: 14,
+              color: C.text,
+              backgroundColor: 'rgba(1,9,9,0.8)',
+              fontSize: 15,
+              minHeight: 120,
+              textAlignVertical: 'top',
+            }}
+          />
+
+          <CTAButton label="Book a Free 5-Minute Call" primary style={{ marginTop: 4 }} />
+
+          <Text style={{ color: C.muted, fontSize: 12, textAlign: 'center', marginTop: 4 }}>
+            This form can be connected to Calendly, email, phone, or a CRM.
+          </Text>
         </View>
       </View>
 
@@ -936,29 +996,27 @@ function AboutPage() {
 
 export default function App() {
   const [page, setPage] = useState('home');
+
+  function renderPage() {
+    switch (page) {
+      case 'problem':      return <ProblemPage     onNav={setPage} />;
+      case 'how-it-works': return <HowItWorksPage  onNav={setPage} />;
+      case 'services':     return <ServicesPage     onNav={setPage} />;
+      case 'why-us':       return <WhyUsPage        onNav={setPage} />;
+      case 'contact':      return <ContactPage />;
+      default:             return <HomePage         onNav={setPage} />;
+    }
+  }
+
   return (
     <View style={styles.root}>
       <StatusBar style="light" />
       <Navbar page={page} onNav={setPage} />
-      {page === 'about' ? (
-        <AboutPage />
-      ) : (
-        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-          <Hero />
-          <StatsBanner />
-          <Services />
-          <HowItWorks />
-          <Testimonials />
-          <Pricing />
-          <FinalCTA />
-          <Footer />
-        </ScrollView>
-      )}
+      {renderPage()}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  root:   { flex: 1, backgroundColor: C.bg },
-  scroll: { flex: 1 },
+  root: { flex: 1, backgroundColor: '#020707' },
 });
