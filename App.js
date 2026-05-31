@@ -240,13 +240,13 @@ const PAIN_POINTS = [
 function LoseTimeSection() {
   const { isDesktop, pad } = useLayout();
   return (
-    <View style={{ backgroundColor: C.surface, paddingHorizontal: pad, paddingVertical: 52 }}>
+    <View style={{ backgroundColor: C.surface, paddingHorizontal: pad, paddingVertical: isDesktop ? 52 : 32 }}>
       <Text style={{
         color: C.text,
-        fontSize: isDesktop ? 30 : 22,
+        fontSize: isDesktop ? 30 : 20,
         fontWeight: '900',
         textAlign: 'center',
-        marginBottom: 36,
+        marginBottom: isDesktop ? 36 : 20,
         letterSpacing: -0.3,
       }}>
         Where Small Businesses Lose Time
@@ -301,13 +301,13 @@ const STEPS = [
 function HowItWorksSection() {
   const { isDesktop, pad } = useLayout();
   return (
-    <View style={{ backgroundColor: C.white, paddingHorizontal: pad, paddingVertical: 56 }}>
+    <View style={{ backgroundColor: C.white, paddingHorizontal: pad, paddingVertical: isDesktop ? 56 : 32 }}>
       <Text style={{
         color: C.text,
-        fontSize: isDesktop ? 30 : 22,
+        fontSize: isDesktop ? 30 : 20,
         fontWeight: '900',
         textAlign: 'center',
-        marginBottom: 40,
+        marginBottom: isDesktop ? 40 : 24,
         letterSpacing: -0.3,
       }}>
         How It Works
@@ -400,65 +400,61 @@ const PRICING = [
 ];
 
 function PricingSection() {
-  const { isDesktop, isTablet, pad } = useLayout();
+  const { isDesktop, pad } = useLayout();
   return (
-    <View style={{ backgroundColor: C.dark, paddingHorizontal: pad, paddingVertical: 56 }}>
+    <View style={{ backgroundColor: C.dark, paddingHorizontal: isDesktop ? pad : 12, paddingVertical: isDesktop ? 56 : 36 }}>
       <Text style={{
         color: C.white,
-        fontSize: isDesktop ? 30 : 22,
+        fontSize: isDesktop ? 30 : 18,
         fontWeight: '900',
         textAlign: 'center',
-        marginBottom: 6,
+        marginBottom: 4,
         letterSpacing: -0.3,
       }}>
         Simple. Transparent. Results-Driven.
       </Text>
-      <Text style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, textAlign: 'center', marginBottom: 32 }}>
+      <Text style={{ color: 'rgba(255,255,255,0.45)', fontSize: isDesktop ? 13 : 11, textAlign: 'center', marginBottom: isDesktop ? 32 : 20 }}>
         All engagements begin with the one-time Setup Fee.
       </Text>
 
-      <View style={{
-        flexDirection: isTablet ? 'row' : 'column',
-        gap: 12,
-        alignItems: isTablet ? 'stretch' : undefined,
-      }}>
+      {/* Always 4 columns — compact on mobile */}
+      <View style={{ flexDirection: 'row', gap: isDesktop ? 12 : 6, alignItems: 'stretch' }}>
         {PRICING.map((p, i) => (
           <View key={i} style={{
-            flex: isTablet ? 1 : undefined,
+            flex: 1,
             backgroundColor: C.white,
-            borderRadius: 14,
-            padding: isDesktop ? 24 : 18,
+            borderRadius: isDesktop ? 14 : 10,
+            padding: isDesktop ? 24 : 10,
             alignItems: 'center',
-            gap: 5,
+            gap: isDesktop ? 5 : 3,
             borderWidth: p.featured ? 2 : 0,
             borderColor: p.featured ? C.green : 'transparent',
-            position: 'relative',
           }}>
             {p.featured && (
               <View style={{
                 backgroundColor: C.green,
                 borderRadius: 999,
-                paddingHorizontal: 10,
-                paddingVertical: 3,
-                marginBottom: 4,
+                paddingHorizontal: isDesktop ? 10 : 6,
+                paddingVertical: 2,
+                marginBottom: 2,
               }}>
-                <Text style={{ color: C.white, fontSize: 10, fontWeight: '900', letterSpacing: 0.5 }}>
-                  MOST POPULAR
+                <Text style={{ color: C.white, fontSize: isDesktop ? 10 : 8, fontWeight: '900' }}>
+                  POPULAR
                 </Text>
               </View>
             )}
-            <Text style={{ color: C.text, fontSize: isDesktop ? 18 : 15, fontWeight: '900' }}>{p.name}</Text>
-            <Text style={{ color: C.muted, fontSize: 12, fontWeight: '600' }}>{p.sub}</Text>
-            <Text style={{ fontSize: isDesktop ? 30 : 24, marginVertical: 6 }}>{p.icon}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 2 }}>
-              <Text style={{ color: C.green, fontSize: isDesktop ? 30 : 24, fontWeight: '900', letterSpacing: -0.5 }}>
+            <Text style={{ color: C.text, fontSize: isDesktop ? 18 : 12, fontWeight: '900', textAlign: 'center' }}>{p.name}</Text>
+            <Text style={{ color: C.muted, fontSize: isDesktop ? 12 : 9, fontWeight: '600' }}>{p.sub}</Text>
+            <Text style={{ fontSize: isDesktop ? 28 : 20, marginVertical: isDesktop ? 6 : 3 }}>{p.icon}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 1 }}>
+              <Text style={{ color: C.green, fontSize: isDesktop ? 28 : 16, fontWeight: '900', letterSpacing: -0.5 }}>
                 {p.price}
               </Text>
               {p.per ? (
-                <Text style={{ color: C.muted, fontSize: 13, marginBottom: isDesktop ? 5 : 3 }}>{p.per}</Text>
+                <Text style={{ color: C.muted, fontSize: isDesktop ? 13 : 9, marginBottom: isDesktop ? 4 : 2 }}>{p.per}</Text>
               ) : null}
             </View>
-            <Text style={{ color: C.muted, fontSize: isDesktop ? 13 : 11, textAlign: 'center', lineHeight: 18 }}>
+            <Text style={{ color: C.muted, fontSize: isDesktop ? 13 : 9, textAlign: 'center', lineHeight: isDesktop ? 18 : 13 }}>
               {p.desc}
             </Text>
           </View>
