@@ -121,102 +121,110 @@ function Navbar({ onNav }) {
 
 function Hero({ onNav }) {
   const { isDesktop, isTablet, pad } = useLayout();
-  const imgH = isDesktop ? 520 : isTablet ? 400 : 320;
+  const H  = isDesktop ? 540 : isTablet ? 460 : 430;
+  const FS = isDesktop ? 50  : isTablet ? 36  : 28;
+  const LH = isDesktop ? 60  : isTablet ? 44  : 35;
 
   return (
-    <View style={{ backgroundColor: C.white, overflow: 'hidden', minHeight: imgH }}>
-      <View style={{ flexDirection: 'row', minHeight: imgH }}>
-        {/* Text column */}
-        <View style={{
-          flex: isDesktop ? 1.15 : 1.1,
-          paddingLeft: pad,
-          paddingRight: isDesktop ? 40 : 12,
-          paddingTop: isDesktop ? 72 : isTablet ? 48 : 32,
-          paddingBottom: 40,
-          justifyContent: 'center',
-          zIndex: 2,
+    <View style={{ height: H, backgroundColor: C.white, overflow: 'hidden' }}>
+
+      {/* Image — right half, full hero height */}
+      <Image
+        source={require('./assets/hero_mod.png')}
+        style={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          width: isDesktop ? '46%' : '50%',
+          height: H,
+        }}
+        resizeMode="cover"
+      />
+
+      {/* Heading + subtext — left side */}
+      <View style={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: isDesktop ? '60%' : '58%',
+        paddingLeft: pad,
+        paddingTop: isDesktop ? 72 : isTablet ? 44 : 28,
+        paddingRight: 10,
+      }}>
+        <Text style={{
+          color: C.text,
+          fontSize: FS,
+          fontWeight: '900',
+          lineHeight: LH,
+          letterSpacing: -0.8,
         }}>
-          <Text style={{
-            color: C.text,
-            fontSize: isDesktop ? 50 : isTablet ? 38 : 26,
-            fontWeight: '900',
-            lineHeight: isDesktop ? 60 : isTablet ? 46 : 33,
-            letterSpacing: -0.8,
-          }}>
-            Your Business{'\n'}Already Works.
-          </Text>
-          <Text style={{
-            color: C.green,
-            fontSize: isDesktop ? 50 : isTablet ? 38 : 26,
-            fontWeight: '900',
-            lineHeight: isDesktop ? 60 : isTablet ? 46 : 33,
-            letterSpacing: -0.8,
-            marginBottom: 16,
-          }}>
-            We Help It{'\n'}Move Faster.
-          </Text>
-          <Text style={{
-            color: C.muted,
-            fontSize: isDesktop ? 16 : isTablet ? 15 : 13,
-            lineHeight: isDesktop ? 27 : 22,
-            maxWidth: 400,
-            marginBottom: 28,
-          }}>
-            From lead response to scheduling, customer follow-up, and internal admin—
-            we build practical AI systems that save your team time, reduce repetitive work,
-            and keep your business moving.
-          </Text>
+          Your Business{'\n'}Already Works.
+        </Text>
+        <Text style={{
+          color: C.green,
+          fontSize: FS,
+          fontWeight: '900',
+          lineHeight: LH,
+          letterSpacing: -0.8,
+          marginBottom: 14,
+        }}>
+          We Help It{'\n'}Move Faster.
+        </Text>
+        <Text style={{
+          color: C.muted,
+          fontSize: isDesktop ? 15 : isTablet ? 14 : 12,
+          lineHeight: isDesktop ? 26 : 20,
+        }}>
+          From lead response to scheduling, customer follow-up, and internal admin—
+          we build practical AI systems that save your team time, reduce repetitive work,
+          and keep your business moving.
+        </Text>
+      </View>
 
-          <TouchableOpacity
-            onPress={() => onNav('contact')}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 10,
-              backgroundColor: C.green,
-              borderRadius: 10,
-              paddingHorizontal: isDesktop ? 22 : 14,
-              paddingVertical: isDesktop ? 16 : 13,
-              marginBottom: 14,
-            }}
-          >
-            <Text style={{ fontSize: isDesktop ? 20 : 16, flexShrink: 0 }}>📅</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={{ color: C.white, fontWeight: '900', fontSize: isDesktop ? 16 : 13 }} numberOfLines={1} adjustsFontSizeToFit>
-                Let's Talk About Your Business
-              </Text>
-              <Text style={{ color: 'rgba(255,255,255,0.78)', fontSize: isDesktop ? 13 : 11 }}>
-                Book a Free 5-Minute Call
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7 }}>
-            <View style={{
-              width: 18, height: 18, borderRadius: 9,
-              backgroundColor: C.green,
-              alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Text style={{ color: C.white, fontSize: 10, fontWeight: '900' }}>✓</Text>
-            </View>
-            <Text style={{ color: C.muted, fontSize: 13 }}>No pressure. No obligations.</Text>
+      {/* CTA button + badge — full width at bottom, overlays image */}
+      <View style={{
+        position: 'absolute',
+        bottom: isDesktop ? 32 : 22,
+        left: pad,
+        right: pad,
+        zIndex: 10,
+        gap: 10,
+      }}>
+        <TouchableOpacity
+          onPress={() => onNav('contact')}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 12,
+            backgroundColor: C.green,
+            borderRadius: 10,
+            paddingHorizontal: isDesktop ? 22 : 16,
+            paddingVertical: isDesktop ? 16 : 14,
+          }}
+        >
+          <Text style={{ fontSize: isDesktop ? 20 : 18, flexShrink: 0 }}>📅</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: C.white, fontWeight: '900', fontSize: isDesktop ? 16 : 14 }}>
+              Let's Talk About Your Business
+            </Text>
+            <Text style={{ color: 'rgba(255,255,255,0.78)', fontSize: isDesktop ? 13 : 11 }}>
+              Book a Free 5-Minute Call
+            </Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
-        {/* Image column */}
-        <View style={{ flex: isDesktop ? 0.85 : 0.7, overflow: 'hidden' }}>
-          <Image
-            source={require('./assets/owner-handshake.png')}
-            style={{
-              width: '100%',
-              height: imgH,
-              borderTopLeftRadius: 18,
-              borderBottomLeftRadius: 18,
-            }}
-            resizeMode="cover"
-          />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7 }}>
+          <View style={{
+            width: 18, height: 18, borderRadius: 9,
+            backgroundColor: C.green,
+            alignItems: 'center', justifyContent: 'center',
+          }}>
+            <Text style={{ color: C.white, fontSize: 10, fontWeight: '900' }}>✓</Text>
+          </View>
+          <Text style={{ color: C.mid, fontSize: 13 }}>No pressure. No obligations.</Text>
         </View>
       </View>
+
     </View>
   );
 }
