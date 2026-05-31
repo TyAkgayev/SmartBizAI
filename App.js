@@ -437,7 +437,7 @@ function HomePage({ onNav }) {
         overflow: 'hidden',
       }}>
         <Image
-          source={require('./assets/deck-montage.png')}
+          source={require('./assets/second_hero.png')}
           style={{ width: '100%', height: isDesktop ? 260 : 180 }}
           resizeMode="cover"
         />
