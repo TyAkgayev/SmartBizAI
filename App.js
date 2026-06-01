@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, ScrollView,
-  TouchableOpacity, useWindowDimensions, Image, TextInput,
+  TouchableOpacity, useWindowDimensions, Image, TextInput, Platform,
 } from 'react-native';
 
 // ─── Theme ───────────────────────────────────────────────────────────────────
@@ -139,6 +139,21 @@ function Hero({ onNav }) {
         resizeMode="cover"
       />
 
+      {/* Gradient fade: white → transparent over image's left edge */}
+      <View
+        pointerEvents="none"
+        style={[{
+          position: 'absolute',
+          top: 0,
+          left: isDesktop ? '54%' : '50%',
+          width: isDesktop ? 160 : 70,
+          height: H,
+          zIndex: 3,
+        }, Platform.OS === 'web' ? {
+          background: 'linear-gradient(to right, white, transparent)',
+        } : {}]}
+      />
+
       {/* Heading + subtext — left side */}
       <View style={{
         position: 'absolute',
@@ -179,12 +194,12 @@ function Hero({ onNav }) {
         </Text>
       </View>
 
-      {/* CTA button + badge — full width at bottom, overlays image */}
+      {/* CTA button + badge — text column width on desktop, full width on mobile */}
       <View style={{
         position: 'absolute',
         bottom: isDesktop ? 32 : 12,
         left: pad,
-        right: pad,
+        ...(isDesktop ? { width: '52%' } : { right: pad }),
         zIndex: 10,
         gap: 10,
       }}>
