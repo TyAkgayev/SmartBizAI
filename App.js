@@ -159,10 +159,10 @@ function Hero({ onNav }) {
         position: 'absolute',
         left: 0,
         top: 0,
-        width: isDesktop ? '60%' : '54%',
+        width: isDesktop ? '54%' : '54%',
         paddingLeft: pad,
         paddingTop: isDesktop ? 72 : isTablet ? 36 : 20,
-        paddingRight: 10,
+        paddingRight: isDesktop ? 48 : 10,
       }}>
         <Text style={{
           color: C.text,
