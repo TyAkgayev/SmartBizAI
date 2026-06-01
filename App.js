@@ -339,15 +339,15 @@ function HowItWorksSection() {
           <React.Fragment key={i}>
             <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: isDesktop ? 8 : 4 }}>
               <View style={{
-                width: isDesktop ? 48 : 36,
-                height: isDesktop ? 48 : 36,
-                borderRadius: isDesktop ? 24 : 18,
+                width: isDesktop ? 64 : 52,
+                height: isDesktop ? 64 : 52,
+                borderRadius: isDesktop ? 32 : 26,
                 backgroundColor: C.green,
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginBottom: 12,
               }}>
-                <Text style={{ color: C.white, fontWeight: '900', fontSize: isDesktop ? 20 : 16 }}>
+                <Text style={{ color: C.white, fontWeight: '900', fontSize: isDesktop ? 26 : 22 }}>
                   {s.n}
                 </Text>
               </View>
