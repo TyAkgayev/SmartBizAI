@@ -246,12 +246,31 @@ function Hero({ onNav }) {
 
 // ─── Where Businesses Lose Time ───────────────────────────────────────────────
 
+// icon_reel.png: 1536×1024, 3 cols × 2 rows, each cell 512×512
+function SpriteIcon({ col, row, size }) {
+  const cell = 512, scale = size / cell;
+  return (
+    <View style={{ width: size, height: size, overflow: 'hidden' }}>
+      <Image
+        source={require('./assets/icon_reel.png')}
+        style={{
+          width: 1536 * scale,
+          height: 1024 * scale,
+          marginLeft: -(col * cell * scale),
+          marginTop: -(row * cell * scale),
+        }}
+        resizeMode="stretch"
+      />
+    </View>
+  );
+}
+
 const PAIN_POINTS = [
-  { img: require('./assets/leads.png'),       label: 'Leads go\nunanswered' },
-  { img: require('./assets/scheduling.png'),  label: 'Manual\nscheduling' },
-  { img: require('./assets/follow_up.png'),   label: 'Follow-ups\nfall through\nthe cracks' },
-  { img: require('./assets/work.png'),        label: 'Repetitive\nadmin work' },
-  { img: require('./assets/taskts.png'),      label: 'Important\ntasks get\ndelayed' },
+  { col: 0, row: 0, label: 'Leads go\nunanswered' },
+  { col: 0, row: 1, label: 'Manual\nscheduling' },
+  { col: 2, row: 0, label: 'Follow-ups\nfall through\nthe cracks' },
+  { col: 1, row: 1, label: 'Repetitive\nadmin work' },
+  { col: 2, row: 1, label: 'Important\ntasks get\ndelayed' },
 ];
 
 function LoseTimeSection() {
@@ -279,15 +298,9 @@ function LoseTimeSection() {
             paddingVertical: 8,
             paddingHorizontal: isDesktop ? 8 : 2,
           }}>
-            <Image
-              source={p.img}
-              style={[{
-                width: isDesktop ? 80 : 56,
-                height: isDesktop ? 80 : 56,
-                marginBottom: 8,
-              }, Platform.OS === 'web' ? { mixBlendMode: 'multiply' } : {}]}
-              resizeMode="contain"
-            />
+            <View style={{ marginBottom: 8 }}>
+              <SpriteIcon col={p.col} row={p.row} size={isDesktop ? 80 : 56} />
+            </View>
             <Text style={{
               color: C.mid,
               fontSize: isDesktop ? 13 : 10,
