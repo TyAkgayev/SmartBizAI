@@ -339,15 +339,15 @@ function HowItWorksSection() {
           <React.Fragment key={i}>
             <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: isDesktop ? 8 : 4 }}>
               <View style={{
-                width: isDesktop ? 64 : 52,
-                height: isDesktop ? 64 : 52,
-                borderRadius: isDesktop ? 32 : 26,
+                width: isDesktop ? 96 : 78,
+                height: isDesktop ? 96 : 78,
+                borderRadius: isDesktop ? 48 : 39,
                 backgroundColor: C.green,
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginBottom: 12,
               }}>
-                <Text style={{ color: C.white, fontWeight: '900', fontSize: isDesktop ? 26 : 22 }}>
+                <Text style={{ color: C.white, fontWeight: '900', fontSize: isDesktop ? 38 : 30 }}>
                   {s.n}
                 </Text>
               </View>
@@ -466,7 +466,6 @@ function PricingSection() {
             )}
             <Text style={{ color: C.text, fontSize: isDesktop ? 18 : 12, fontWeight: '900', textAlign: 'center' }}>{p.name}</Text>
             <Text style={{ color: C.muted, fontSize: isDesktop ? 12 : 9, fontWeight: '600' }}>{p.sub}</Text>
-            <Text style={{ fontSize: isDesktop ? 28 : 20, marginVertical: isDesktop ? 6 : 3 }}>{p.icon}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 1 }}>
               <Text style={{ color: C.green, fontSize: isDesktop ? 28 : 16, fontWeight: '900', letterSpacing: -0.5 }}>
                 {p.price}
