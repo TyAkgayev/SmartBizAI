@@ -119,7 +119,7 @@ function Navbar({ onNav }) {
 
 function Hero({ onNav }) {
   const { isDesktop, isTablet, pad } = useLayout();
-  const H  = isDesktop ? 540 : isTablet ? 400 : 285;
+  const H  = isDesktop ? 540 : isTablet ? 400 : 390;
   const FS = isDesktop ? 50  : isTablet ? 34  : 23;
   const LH = isDesktop ? 60  : isTablet ? 42  : 29;
 
@@ -290,11 +290,21 @@ function LoseTimeSection() {
           Where Small Businesses Lose Time
         </Text>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', gap: isDesktop ? 12 : 4 }}>
           {PAIN_POINTS.map((p, i) => (
-            <View key={i} style={{ flex: 1, alignItems: 'center', paddingHorizontal: isDesktop ? 8 : 2 }}>
-              <View style={{ height: isDesktop ? 120 : 80, justifyContent: 'flex-end', alignItems: 'center', marginBottom: 8 }}>
-                <SpriteIcon col={p.col} row={p.row} size={isDesktop ? 110 : 72} />
+            <View key={i} style={{
+              flex: 1,
+              alignItems: 'center',
+              paddingHorizontal: isDesktop ? 8 : 2,
+              paddingVertical: isDesktop ? 16 : 8,
+              borderWidth: 1,
+              borderColor: C.border,
+              borderRadius: isDesktop ? 14 : 8,
+              backgroundColor: C.white,
+              overflow: 'hidden',
+            }}>
+              <View style={{ height: isDesktop ? 120 : 72, justifyContent: 'flex-end', alignItems: 'center', marginBottom: isDesktop ? 8 : 6 }}>
+                <SpriteIcon col={p.col} row={p.row} size={isDesktop ? 110 : 60} />
               </View>
               <Text style={{
                 color: C.mid,
