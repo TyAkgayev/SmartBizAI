@@ -275,43 +275,39 @@ const PAIN_POINTS = [
 
 function LoseTimeSection() {
   const { isDesktop, pad, w } = useLayout();
-  const row = w - pad * 2;
+  const maxW = isDesktop ? w * 0.8 : w - pad * 2;
   return (
-    <View style={{ backgroundColor: C.surface, paddingHorizontal: pad, paddingVertical: isDesktop ? 52 : 14 }}>
-      <Text style={{
-        color: C.text,
-        fontSize: isDesktop ? 30 : 17,
-        fontWeight: '900',
-        textAlign: 'center',
-        marginBottom: isDesktop ? 36 : 10,
-        width: row,
-        letterSpacing: -0.3,
-      }}>
-        Where Small Businesses Lose Time
-      </Text>
+    <View style={{ backgroundColor: C.surface, paddingVertical: isDesktop ? 52 : 14, alignItems: 'center' }}>
+      <View style={{ width: maxW }}>
+        <Text style={{
+          color: C.text,
+          fontSize: isDesktop ? 30 : 17,
+          fontWeight: '900',
+          textAlign: 'center',
+          marginBottom: isDesktop ? 36 : 10,
+          letterSpacing: -0.3,
+        }}>
+          Where Small Businesses Lose Time
+        </Text>
 
-      <View style={{ flexDirection: 'row', justifyContent: 'center', width: row }}>
-        {PAIN_POINTS.map((p, i) => (
-          <View key={i} style={{
-            flex: 1,
-            alignItems: 'center',
-            paddingVertical: 8,
-            paddingHorizontal: isDesktop ? 8 : 2,
-          }}>
-            <View style={{ marginBottom: 8 }}>
-              <SpriteIcon col={p.col} row={p.row} size={isDesktop ? 110 : 72} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          {PAIN_POINTS.map((p, i) => (
+            <View key={i} style={{ flex: 1, alignItems: 'center', paddingHorizontal: isDesktop ? 8 : 2 }}>
+              <View style={{ height: isDesktop ? 120 : 80, justifyContent: 'flex-end', alignItems: 'center', marginBottom: 8 }}>
+                <SpriteIcon col={p.col} row={p.row} size={isDesktop ? 110 : 72} />
+              </View>
+              <Text style={{
+                color: C.mid,
+                fontSize: isDesktop ? 13 : 10,
+                fontWeight: '600',
+                textAlign: 'center',
+                lineHeight: 15,
+              }}>
+                {p.label}
+              </Text>
             </View>
-            <Text style={{
-              color: C.mid,
-              fontSize: isDesktop ? 13 : 10,
-              fontWeight: '600',
-              textAlign: 'center',
-              lineHeight: 15,
-            }}>
-              {p.label}
-            </Text>
-          </View>
-        ))}
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -328,22 +324,22 @@ const STEPS = [
 
 function HowItWorksSection() {
   const { isDesktop, pad, w } = useLayout();
-  const row = w - pad * 2;
+  const maxW = isDesktop ? w * 0.8 : w - pad * 2;
   return (
-    <View style={{ backgroundColor: C.white, paddingHorizontal: pad, paddingVertical: isDesktop ? 56 : 14 }}>
+    <View style={{ backgroundColor: C.white, paddingVertical: isDesktop ? 56 : 14, alignItems: 'center' }}>
+      <View style={{ width: maxW }}>
       <Text style={{
         color: C.text,
         fontSize: isDesktop ? 30 : 17,
         fontWeight: '900',
         textAlign: 'center',
         marginBottom: isDesktop ? 40 : 12,
-        width: row,
         letterSpacing: -0.3,
       }}>
         How It Works
       </Text>
 
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start', width: row }}>
+      <View style={{ flexDirection: 'row', alignItems: 'flex-start', width: maxW }}>
         {STEPS.map((s, i) => (
           <React.Fragment key={i}>
             <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: isDesktop ? 8 : 4 }}>
@@ -386,6 +382,7 @@ function HowItWorksSection() {
             )}
           </React.Fragment>
         ))}
+      </View>
       </View>
     </View>
   );
