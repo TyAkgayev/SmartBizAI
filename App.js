@@ -205,15 +205,17 @@ function Hero({ onNav }) {
       }}>
         <TouchableOpacity
           onPress={() => onNav('contact')}
-          style={{
+          style={[{
             flexDirection: 'row',
             alignItems: 'center',
             gap: 12,
-            backgroundColor: C.green,
             borderRadius: 10,
             paddingHorizontal: isDesktop ? 22 : 16,
             paddingVertical: isDesktop ? 16 : 10,
-          }}
+          }, Platform.OS === 'web' && isDesktop
+            ? { background: `linear-gradient(to right, ${C.green} 50%, transparent 100%)` }
+            : { backgroundColor: C.green }
+          ]}
         >
           <Text style={{ fontSize: isDesktop ? 20 : 18, flexShrink: 0 }}>📅</Text>
           <View style={{ flex: 1 }}>
