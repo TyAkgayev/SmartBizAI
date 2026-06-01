@@ -439,7 +439,7 @@ function PricingSection() {
       </Text>
 
       {/* Always 4 columns — compact on mobile */}
-      <View style={{ flexDirection: 'row', gap: isDesktop ? 12 : 6, alignItems: 'stretch' }}>
+      <View style={{ flexDirection: 'row', gap: isDesktop ? 12 : 6, alignItems: 'stretch', paddingTop: isDesktop ? 18 : 14 }}>
         {PRICING.map((p, i) => (
           <View key={i} style={{
             flex: 1,
