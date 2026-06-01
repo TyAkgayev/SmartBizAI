@@ -280,11 +280,11 @@ function LoseTimeSection() {
           }}>
             <Image
               source={p.img}
-              style={{
+              style={[{
                 width: isDesktop ? 80 : 56,
                 height: isDesktop ? 80 : 56,
                 marginBottom: 8,
-              }}
+              }, Platform.OS === 'web' ? { mixBlendMode: 'multiply' } : {}]}
               resizeMode="contain"
             />
             <Text style={{
