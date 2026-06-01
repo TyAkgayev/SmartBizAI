@@ -268,7 +268,7 @@ function SpriteIcon({ col, row, size }) {
 const PAIN_POINTS = [
   { col: 0, row: 0, label: 'Leads go\nunanswered' },
   { col: 0, row: 1, label: 'Manual\nscheduling' },
-  { col: 2, row: 0, label: 'Follow-ups\nfall through\nthe cracks' },
+  { col: 1, row: 0, label: 'Follow-ups\nfall through\nthe cracks' },
   { col: 1, row: 1, label: 'Repetitive\nadmin work' },
   { col: 2, row: 1, label: 'Important\ntasks get\ndelayed' },
 ];
@@ -299,7 +299,7 @@ function LoseTimeSection() {
             paddingHorizontal: isDesktop ? 8 : 2,
           }}>
             <View style={{ marginBottom: 8 }}>
-              <SpriteIcon col={p.col} row={p.row} size={isDesktop ? 80 : 56} />
+              <SpriteIcon col={p.col} row={p.row} size={isDesktop ? 110 : 72} />
             </View>
             <Text style={{
               color: C.mid,
