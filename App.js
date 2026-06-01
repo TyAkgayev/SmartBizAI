@@ -339,15 +339,15 @@ function HowItWorksSection() {
           <React.Fragment key={i}>
             <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: isDesktop ? 8 : 4 }}>
               <View style={{
-                width: isDesktop ? 96 : 78,
-                height: isDesktop ? 96 : 78,
-                borderRadius: isDesktop ? 48 : 39,
+                width: isDesktop ? 72 : 58,
+                height: isDesktop ? 72 : 58,
+                borderRadius: isDesktop ? 36 : 29,
                 backgroundColor: C.green,
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginBottom: 12,
               }}>
-                <Text style={{ color: C.white, fontWeight: '900', fontSize: isDesktop ? 38 : 30 }}>
+                <Text style={{ color: C.white, fontWeight: '900', fontSize: isDesktop ? 28 : 22 }}>
                   {s.n}
                 </Text>
               </View>
@@ -371,7 +371,7 @@ function HowItWorksSection() {
             </View>
 
             {i < STEPS.length - 1 && (
-              <View style={{ justifyContent: 'flex-start', paddingTop: isDesktop ? 12 : 6, paddingHorizontal: isDesktop ? 2 : 0 }}>
+              <View style={{ paddingTop: isDesktop ? 26 : 20, paddingHorizontal: isDesktop ? 4 : 1 }}>
                 <Text style={{ color: C.green, fontSize: isDesktop ? 20 : 10, fontWeight: '900' }}>→</Text>
               </View>
             )}
