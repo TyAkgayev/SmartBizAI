@@ -37,7 +37,7 @@ function useLayout() {
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 
 function Navbar({ onNav }) {
-  const { isDesktop, isTablet, pad } = useLayout();
+  const { isDesktop, pad } = useLayout();
   const [open, setOpen] = useState(false);
 
   const links = [
@@ -119,9 +119,9 @@ function Navbar({ onNav }) {
 
 function Hero({ onNav }) {
   const { isDesktop, isTablet, pad } = useLayout();
-  const H  = isDesktop ? 540 : isTablet ? 460 : 430;
-  const FS = isDesktop ? 50  : isTablet ? 36  : 28;
-  const LH = isDesktop ? 60  : isTablet ? 44  : 35;
+  const H  = isDesktop ? 540 : isTablet ? 400 : 285;
+  const FS = isDesktop ? 50  : isTablet ? 34  : 23;
+  const LH = isDesktop ? 60  : isTablet ? 42  : 29;
 
   return (
     <View style={{ height: H, backgroundColor: C.white, overflow: 'hidden' }}>
@@ -144,9 +144,9 @@ function Hero({ onNav }) {
         position: 'absolute',
         left: 0,
         top: 0,
-        width: isDesktop ? '60%' : '58%',
+        width: isDesktop ? '60%' : '54%',
         paddingLeft: pad,
-        paddingTop: isDesktop ? 72 : isTablet ? 44 : 28,
+        paddingTop: isDesktop ? 72 : isTablet ? 36 : 20,
         paddingRight: 10,
       }}>
         <Text style={{
@@ -164,14 +164,14 @@ function Hero({ onNav }) {
           fontWeight: '900',
           lineHeight: LH,
           letterSpacing: -0.8,
-          marginBottom: 14,
+          marginBottom: isDesktop ? 14 : 8,
         }}>
           We Help It{'\n'}Move Faster.
         </Text>
         <Text style={{
           color: C.muted,
-          fontSize: isDesktop ? 15 : isTablet ? 14 : 12,
-          lineHeight: isDesktop ? 26 : 20,
+          fontSize: isDesktop ? 15 : isTablet ? 13 : 11,
+          lineHeight: isDesktop ? 26 : isTablet ? 20 : 16,
         }}>
           From lead response to scheduling, customer follow-up, and internal admin—
           we build practical AI systems that save your team time, reduce repetitive work,
@@ -182,7 +182,7 @@ function Hero({ onNav }) {
       {/* CTA button + badge — full width at bottom, overlays image */}
       <View style={{
         position: 'absolute',
-        bottom: isDesktop ? 32 : 22,
+        bottom: isDesktop ? 32 : 12,
         left: pad,
         right: pad,
         zIndex: 10,
@@ -197,7 +197,7 @@ function Hero({ onNav }) {
             backgroundColor: C.green,
             borderRadius: 10,
             paddingHorizontal: isDesktop ? 22 : 16,
-            paddingVertical: isDesktop ? 16 : 14,
+            paddingVertical: isDesktop ? 16 : 10,
           }}
         >
           <Text style={{ fontSize: isDesktop ? 20 : 18, flexShrink: 0 }}>📅</Text>
@@ -238,21 +238,23 @@ const PAIN_POINTS = [
 ];
 
 function LoseTimeSection() {
-  const { isDesktop, pad } = useLayout();
+  const { isDesktop, pad, w } = useLayout();
+  const row = w - pad * 2;
   return (
-    <View style={{ backgroundColor: C.surface, paddingHorizontal: pad, paddingVertical: isDesktop ? 52 : 32 }}>
+    <View style={{ backgroundColor: C.surface, paddingHorizontal: pad, paddingVertical: isDesktop ? 52 : 14 }}>
       <Text style={{
         color: C.text,
-        fontSize: isDesktop ? 30 : 20,
+        fontSize: isDesktop ? 30 : 17,
         fontWeight: '900',
         textAlign: 'center',
-        marginBottom: isDesktop ? 36 : 20,
+        marginBottom: isDesktop ? 36 : 10,
+        width: row,
         letterSpacing: -0.3,
       }}>
         Where Small Businesses Lose Time
       </Text>
 
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', width: row }}>
         {PAIN_POINTS.map((p, i) => (
           <View key={i} style={{
             flex: 1,
@@ -299,21 +301,23 @@ const STEPS = [
 ];
 
 function HowItWorksSection() {
-  const { isDesktop, pad } = useLayout();
+  const { isDesktop, pad, w } = useLayout();
+  const row = w - pad * 2;
   return (
-    <View style={{ backgroundColor: C.white, paddingHorizontal: pad, paddingVertical: isDesktop ? 56 : 32 }}>
+    <View style={{ backgroundColor: C.white, paddingHorizontal: pad, paddingVertical: isDesktop ? 56 : 14 }}>
       <Text style={{
         color: C.text,
-        fontSize: isDesktop ? 30 : 20,
+        fontSize: isDesktop ? 30 : 17,
         fontWeight: '900',
         textAlign: 'center',
-        marginBottom: isDesktop ? 40 : 24,
+        marginBottom: isDesktop ? 40 : 12,
+        width: row,
         letterSpacing: -0.3,
       }}>
         How It Works
       </Text>
 
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'flex-start', width: row }}>
         {STEPS.map((s, i) => (
           <React.Fragment key={i}>
             <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: isDesktop ? 8 : 4 }}>
@@ -350,8 +354,8 @@ function HowItWorksSection() {
             </View>
 
             {i < STEPS.length - 1 && (
-              <View style={{ justifyContent: 'flex-start', paddingTop: isDesktop ? 12 : 8, paddingHorizontal: 2 }}>
-                <Text style={{ color: C.green, fontSize: isDesktop ? 20 : 14, fontWeight: '900' }}>→</Text>
+              <View style={{ justifyContent: 'flex-start', paddingTop: isDesktop ? 12 : 6, paddingHorizontal: isDesktop ? 2 : 0 }}>
+                <Text style={{ color: C.green, fontSize: isDesktop ? 20 : 10, fontWeight: '900' }}>→</Text>
               </View>
             )}
           </React.Fragment>
@@ -402,18 +406,18 @@ const PRICING = [
 function PricingSection() {
   const { isDesktop, pad } = useLayout();
   return (
-    <View style={{ backgroundColor: C.dark, paddingHorizontal: isDesktop ? pad : 12, paddingVertical: isDesktop ? 56 : 36 }}>
+    <View style={{ backgroundColor: C.dark, paddingHorizontal: isDesktop ? pad : 10, paddingVertical: isDesktop ? 56 : 16 }}>
       <Text style={{
         color: C.white,
-        fontSize: isDesktop ? 30 : 18,
+        fontSize: isDesktop ? 30 : 15,
         fontWeight: '900',
         textAlign: 'center',
-        marginBottom: 4,
+        marginBottom: 3,
         letterSpacing: -0.3,
       }}>
         Simple. Transparent. Results-Driven.
       </Text>
-      <Text style={{ color: 'rgba(255,255,255,0.45)', fontSize: isDesktop ? 13 : 11, textAlign: 'center', marginBottom: isDesktop ? 32 : 20 }}>
+      <Text style={{ color: 'rgba(255,255,255,0.45)', fontSize: isDesktop ? 13 : 10, textAlign: 'center', marginBottom: isDesktop ? 32 : 10 }}>
         All engagements begin with the one-time Setup Fee.
       </Text>
 
@@ -484,35 +488,33 @@ const WHY = [
 ];
 
 function WhySection() {
-  const { isDesktop, isTablet, pad } = useLayout();
+  const { isDesktop, pad } = useLayout();
   return (
-    <View style={{ backgroundColor: C.surface, paddingHorizontal: pad, paddingVertical: 56 }}>
+    <View style={{ backgroundColor: C.surface, paddingHorizontal: isDesktop ? pad : 12, paddingVertical: isDesktop ? 56 : 16 }}>
       <Text style={{
         color: C.text,
-        fontSize: isDesktop ? 30 : 24,
+        fontSize: isDesktop ? 30 : 17,
         fontWeight: '900',
         textAlign: 'center',
-        marginBottom: 36,
+        marginBottom: isDesktop ? 36 : 12,
         letterSpacing: -0.3,
       }}>
         Why <Text style={{ color: C.green }}>SmartBizAi</Text>?
       </Text>
 
-      <View style={{
-        flexDirection: isTablet ? 'row' : 'column',
-        gap: isTablet ? 16 : 28,
-      }}>
+      {/* Always 3-across, even on mobile */}
+      <View style={{ flexDirection: 'row', gap: isDesktop ? 16 : 6 }}>
         {WHY.map((w, i) => (
           <View key={i} style={{
-            flex: isTablet ? 1 : undefined,
+            flex: 1,
             alignItems: 'center',
-            paddingHorizontal: isDesktop ? 20 : 8,
-            gap: 10,
+            paddingHorizontal: isDesktop ? 20 : 4,
+            gap: isDesktop ? 10 : 5,
           }}>
-            <Text style={{ fontSize: isDesktop ? 42 : 36 }}>{w.icon}</Text>
+            <Text style={{ fontSize: isDesktop ? 42 : 26 }}>{w.icon}</Text>
             <Text style={{
               color: C.text,
-              fontSize: isDesktop ? 16 : 15,
+              fontSize: isDesktop ? 16 : 11,
               fontWeight: '800',
               textAlign: 'center',
             }}>
@@ -520,9 +522,9 @@ function WhySection() {
             </Text>
             <Text style={{
               color: C.muted,
-              fontSize: isDesktop ? 14 : 13,
+              fontSize: isDesktop ? 14 : 10,
               textAlign: 'center',
-              lineHeight: 22,
+              lineHeight: isDesktop ? 22 : 14,
             }}>
               {w.body}
             </Text>
@@ -666,13 +668,14 @@ function StickyBar({ onNav }) {
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
+  const { width } = useWindowDimensions();
   const [, setPage] = useState('home');
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, { width, overflow: 'hidden' }]}>
       <StatusBar style="dark" />
       <Navbar onNav={setPage} />
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <ScrollView style={{ flex: 1, width }} showsVerticalScrollIndicator={false} contentContainerStyle={{ width, overflow: 'hidden' }}>
         <Hero onNav={setPage} />
         <LoseTimeSection />
         <HowItWorksSection />
