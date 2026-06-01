@@ -439,34 +439,31 @@ function PricingSection() {
       </Text>
 
       {/* Always 4 columns — compact on mobile */}
-      <View style={{ flexDirection: 'row', gap: isDesktop ? 12 : 6, alignItems: 'stretch', paddingTop: isDesktop ? 18 : 14 }}>
+      <View style={{ flexDirection: 'row', gap: isDesktop ? 12 : 6, alignItems: 'stretch' }}>
         {PRICING.map((p, i) => (
           <View key={i} style={{
             flex: 1,
             backgroundColor: C.white,
             borderRadius: isDesktop ? 14 : 10,
             padding: isDesktop ? 24 : 10,
-            paddingTop: isDesktop ? 32 : 16,
             alignItems: 'center',
             gap: isDesktop ? 5 : 3,
             borderWidth: p.featured ? 2 : 0,
             borderColor: p.featured ? C.green : 'transparent',
-            position: 'relative',
           }}>
-            {p.featured && (
-              <View style={{
-                position: 'absolute',
-                top: isDesktop ? -14 : -10,
-                backgroundColor: C.green,
-                borderRadius: 999,
-                paddingHorizontal: isDesktop ? 10 : 6,
-                paddingVertical: 2,
-              }}>
-                <Text style={{ color: C.white, fontSize: isDesktop ? 10 : 8, fontWeight: '900' }}>
-                  POPULAR
-                </Text>
-              </View>
-            )}
+            {/* Fixed-height badge row — keeps all cards' content vertically aligned */}
+            <View style={{ height: isDesktop ? 22 : 16, alignItems: 'center', justifyContent: 'center' }}>
+              {p.featured && (
+                <View style={{
+                  backgroundColor: C.green,
+                  borderRadius: 999,
+                  paddingHorizontal: isDesktop ? 10 : 6,
+                  paddingVertical: 2,
+                }}>
+                  <Text style={{ color: C.white, fontSize: isDesktop ? 10 : 8, fontWeight: '900' }}>POPULAR</Text>
+                </View>
+              )}
+            </View>
             <Text style={{ color: C.text, fontSize: isDesktop ? 18 : 12, fontWeight: '900', textAlign: 'center' }}>{p.name}</Text>
             <Text style={{ color: C.muted, fontSize: isDesktop ? 12 : 9, fontWeight: '600' }}>{p.sub}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 1 }}>
