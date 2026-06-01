@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AISite",
-    "slug": "AISite",
+    "name": "SmartBizAi",
+    "slug": "SmartBizAi",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,7 +18,10 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo.png",
+      "name": "SmartBizAi",
+      "shortName": "SmartBizAi",
+      "description": "Practical AI systems for small business"
     }
   }
 }
