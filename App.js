@@ -251,6 +251,7 @@ const PAIN_POINTS = [
   { img: require('./assets/scheduling.png'),  label: 'Manual\nscheduling' },
   { img: require('./assets/follow_up.png'),   label: 'Follow-ups\nfall through\nthe cracks' },
   { img: require('./assets/work.png'),        label: 'Repetitive\nadmin work' },
+  { img: require('./assets/taskts.png'),      label: 'Important\ntasks get\ndelayed' },
 ];
 
 function LoseTimeSection() {
