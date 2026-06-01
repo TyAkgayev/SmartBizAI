@@ -446,18 +446,21 @@ function PricingSection() {
             backgroundColor: C.white,
             borderRadius: isDesktop ? 14 : 10,
             padding: isDesktop ? 24 : 10,
+            paddingTop: isDesktop ? 32 : 16,
             alignItems: 'center',
             gap: isDesktop ? 5 : 3,
             borderWidth: p.featured ? 2 : 0,
             borderColor: p.featured ? C.green : 'transparent',
+            position: 'relative',
           }}>
             {p.featured && (
               <View style={{
+                position: 'absolute',
+                top: isDesktop ? -14 : -10,
                 backgroundColor: C.green,
                 borderRadius: 999,
                 paddingHorizontal: isDesktop ? 10 : 6,
                 paddingVertical: 2,
-                marginBottom: 2,
               }}>
                 <Text style={{ color: C.white, fontSize: isDesktop ? 10 : 8, fontWeight: '900' }}>
                   POPULAR
