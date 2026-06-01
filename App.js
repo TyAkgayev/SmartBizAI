@@ -247,11 +247,10 @@ function Hero({ onNav }) {
 // ─── Where Businesses Lose Time ───────────────────────────────────────────────
 
 const PAIN_POINTS = [
-  { icon: '💬', label: 'Leads go\nunanswered' },
-  { icon: '📅', label: 'Manual\nscheduling' },
-  { icon: '✉️', label: 'Follow-ups\nfall through\nthe cracks' },
-  { icon: '📋', label: 'Repetitive\nadmin work' },
-  { icon: '📊', label: 'Important\ntasks get\ndelayed' },
+  { img: require('./assets/leads.png'),       label: 'Leads go\nunanswered' },
+  { img: require('./assets/scheduling.png'),  label: 'Manual\nscheduling' },
+  { img: require('./assets/follow_up.png'),   label: 'Follow-ups\nfall through\nthe cracks' },
+  { img: require('./assets/work.png'),        label: 'Repetitive\nadmin work' },
 ];
 
 function LoseTimeSection() {
@@ -279,19 +278,15 @@ function LoseTimeSection() {
             paddingVertical: 8,
             paddingHorizontal: isDesktop ? 8 : 2,
           }}>
-            <View style={{
-              width: isDesktop ? 58 : 46,
-              height: isDesktop ? 58 : 46,
-              borderRadius: isDesktop ? 16 : 12,
-              borderWidth: 1.5,
-              borderColor: C.green,
-              backgroundColor: C.greenBg,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 8,
-            }}>
-              <Text style={{ fontSize: isDesktop ? 26 : 20 }}>{p.icon}</Text>
-            </View>
+            <Image
+              source={p.img}
+              style={{
+                width: isDesktop ? 80 : 56,
+                height: isDesktop ? 80 : 56,
+                marginBottom: 8,
+              }}
+              resizeMode="contain"
+            />
             <Text style={{
               color: C.mid,
               fontSize: isDesktop ? 13 : 10,
