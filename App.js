@@ -22,6 +22,9 @@ const C = {
   white:     '#FFFFFF',
 };
 
+// ─── Form endpoint ────────────────────────────────────────────────────────────
+const FORMSPREE_URL = 'https://formspree.io/f/xaqzwejy';
+
 // ─── Layout ───────────────────────────────────────────────────────────────────
 
 function useLayout() {
@@ -117,7 +120,7 @@ function Navbar({ onNav }) {
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
-function Hero({ onNav }) {
+function Hero({ onNav, onCallMeBack }) {
   const { isDesktop, isTablet, pad } = useLayout();
   const H  = isDesktop ? 540 : isTablet ? 400 : 390;
   const FS = isDesktop ? 50  : isTablet ? 34  : 23;
@@ -228,15 +231,22 @@ function Hero({ onNav }) {
           </View>
         </TouchableOpacity>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7 }}>
-          <View style={{
-            width: 18, height: 18, borderRadius: 9,
-            backgroundColor: C.green,
-            alignItems: 'center', justifyContent: 'center',
-          }}>
-            <Text style={{ color: C.white, fontSize: 10, fontWeight: '900' }}>✓</Text>
-          </View>
-          <Text style={{ color: C.mid, fontSize: 13 }}>No pressure. No obligations.</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+          <TouchableOpacity
+            onPress={onCallMeBack}
+            style={{
+              borderWidth: 1.5,
+              borderColor: C.green,
+              borderRadius: 10,
+              paddingHorizontal: isDesktop ? 18 : 14,
+              paddingVertical: isDesktop ? 12 : 9,
+            }}
+          >
+            <Text style={{ color: C.green, fontWeight: '800', fontSize: isDesktop ? 15 : 13 }}>
+              Call Me Back
+            </Text>
+          </TouchableOpacity>
+          <Text style={{ color: C.muted, fontSize: 13 }}>No pressure. No obligations.</Text>
         </View>
       </View>
 
@@ -571,7 +581,41 @@ function WhySection() {
 
 function ContactSection() {
   const { isDesktop, pad } = useLayout();
-  const [form, setForm] = useState({ name: '', business: '', contact: '', message: '' });
+  const [form, setForm]     = useState({ name: '', business: '', contact: '', message: '' });
+  const [status, setStatus] = useState('idle');
+  const [formError, setFormError] = useState('');
+
+  async function handleSubmit() {
+    if (!form.contact.trim()) {
+      setFormError('Please enter a phone number or email so we can reach you.');
+      return;
+    }
+    setFormError('');
+    setStatus('sending');
+    try {
+      const res = await fetch(FORMSPREE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name:     form.name     || '(not provided)',
+          business: form.business || '(not provided)',
+          contact:  form.contact,
+          message:  form.message  || '(not provided)',
+          _subject: 'Free Call Request — SmartBizAi',
+        }),
+      });
+      if (res.ok) {
+        setStatus('success');
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setStatus('error');
+        setFormError(data?.error || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setStatus('error');
+      setFormError('Network error. Please try again.');
+    }
+  }
 
   return (
     <View style={{ backgroundColor: C.white, paddingHorizontal: pad, paddingVertical: 56 }}>
@@ -594,56 +638,83 @@ function ContactSection() {
       </Text>
 
       <View style={{ maxWidth: 520, alignSelf: 'center', width: '100%', gap: 12 }}>
-        {[
-          { key: 'name',     placeholder: 'Your name' },
-          { key: 'business', placeholder: 'Business name' },
-          { key: 'contact',  placeholder: 'Phone or email' },
-        ].map(f => (
-          <TextInput
-            key={f.key}
-            placeholder={f.placeholder}
-            placeholderTextColor={C.muted}
-            value={form[f.key]}
-            onChangeText={v => setForm(p => ({ ...p, [f.key]: v }))}
-            style={{
-              borderWidth: 1.5,
-              borderColor: C.border,
-              borderRadius: 10,
-              padding: 14,
-              fontSize: 15,
-              color: C.text,
-              backgroundColor: C.white,
-            }}
-          />
-        ))}
-        <TextInput
-          placeholder="Briefly describe what feels slow or repetitive."
-          placeholderTextColor={C.muted}
-          value={form.message}
-          onChangeText={v => setForm(p => ({ ...p, message: v }))}
-          multiline
-          numberOfLines={4}
-          style={{
+        {status === 'success' ? (
+          <View style={{
+            backgroundColor: C.greenBg,
             borderWidth: 1.5,
-            borderColor: C.border,
-            borderRadius: 10,
-            padding: 14,
-            fontSize: 15,
-            color: C.text,
-            backgroundColor: C.white,
-            minHeight: 110,
-            textAlignVertical: 'top',
-          }}
-        />
-        <TouchableOpacity style={{
-          backgroundColor: C.green,
-          borderRadius: 10,
-          paddingVertical: 16,
-          alignItems: 'center',
-          marginTop: 4,
-        }}>
-          <Text style={{ color: C.white, fontWeight: '900', fontSize: 16 }}>Book a Free 5-Minute Call</Text>
-        </TouchableOpacity>
+            borderColor: C.green,
+            borderRadius: 12,
+            padding: 28,
+            alignItems: 'center',
+            gap: 8,
+          }}>
+            <Text style={{ color: C.green, fontSize: 20, fontWeight: '900' }}>Request Sent!</Text>
+            <Text style={{ color: C.mid, fontSize: 15, textAlign: 'center', lineHeight: 24 }}>
+              We received your message and will be in touch shortly.
+            </Text>
+          </View>
+        ) : (
+          <>
+            {[
+              { key: 'name',     placeholder: 'Your name' },
+              { key: 'business', placeholder: 'Business name' },
+              { key: 'contact',  placeholder: 'Phone or email *' },
+            ].map(f => (
+              <TextInput
+                key={f.key}
+                placeholder={f.placeholder}
+                placeholderTextColor={C.muted}
+                value={form[f.key]}
+                onChangeText={v => setForm(p => ({ ...p, [f.key]: v }))}
+                style={{
+                  borderWidth: 1.5,
+                  borderColor: C.border,
+                  borderRadius: 10,
+                  padding: 14,
+                  fontSize: 15,
+                  color: C.text,
+                  backgroundColor: C.white,
+                }}
+              />
+            ))}
+            <TextInput
+              placeholder="Briefly describe what feels slow or repetitive."
+              placeholderTextColor={C.muted}
+              value={form.message}
+              onChangeText={v => setForm(p => ({ ...p, message: v }))}
+              multiline
+              numberOfLines={4}
+              style={{
+                borderWidth: 1.5,
+                borderColor: C.border,
+                borderRadius: 10,
+                padding: 14,
+                fontSize: 15,
+                color: C.text,
+                backgroundColor: C.white,
+                minHeight: 110,
+                textAlignVertical: 'top',
+              }}
+            />
+            {!!formError && (
+              <Text style={{ color: '#DC2626', fontSize: 13 }}>{formError}</Text>
+            )}
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={{
+                backgroundColor: C.green,
+                borderRadius: 10,
+                paddingVertical: 16,
+                alignItems: 'center',
+                marginTop: 4,
+              }}
+            >
+              <Text style={{ color: C.white, fontWeight: '900', fontSize: 16 }}>
+                {status === 'sending' ? 'Sending…' : 'Book a Free 5-Minute Call'}
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </View>
   );
@@ -697,18 +768,186 @@ function StickyBar({ onNav }) {
   );
 }
 
+// ─── Call Me Back Modal ───────────────────────────────────────────────────────
+
+function CallMeBackModal({ visible, onClose }) {
+  const [form, setForm]     = useState({ name: '', phone: '', email: '' });
+  const [status, setStatus] = useState('idle');
+  const [error, setError]   = useState('');
+
+  function reset() {
+    setForm({ name: '', phone: '', email: '' });
+    setStatus('idle');
+    setError('');
+  }
+
+  async function handleSubmit() {
+    if (!form.phone.trim() && !form.email.trim()) {
+      setError('Please enter a phone number or email so we can reach you.');
+      return;
+    }
+    setError('');
+    setStatus('sending');
+    try {
+      const res = await fetch(FORMSPREE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name:     form.name  || '(not provided)',
+          phone:    form.phone || '(not provided)',
+          email:    form.email || '(not provided)',
+          _subject: 'Call Me Back Request — SmartBizAi',
+        }),
+      });
+      if (res.ok) {
+        setStatus('success');
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setStatus('error');
+        setError(data?.error || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setStatus('error');
+      setError('Network error. Please try again.');
+    }
+  }
+
+  if (!visible) return null;
+
+  return (
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={() => { reset(); onClose(); }}
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.55)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 200,
+      }}
+    >
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => {}}
+        style={{
+          backgroundColor: C.white,
+          borderRadius: 20,
+          borderWidth: 1.5,
+          borderColor: C.border,
+          padding: 32,
+          width: 420,
+          maxWidth: '92%',
+          gap: 14,
+          shadowColor: '#000',
+          shadowOpacity: 0.15,
+          shadowRadius: 24,
+          shadowOffset: { width: 0, height: 8 },
+        }}
+      >
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+          <Text style={{ color: C.text, fontSize: 22, fontWeight: '900' }}>Request a Call Back</Text>
+          <TouchableOpacity onPress={() => { reset(); onClose(); }} style={{ padding: 4 }}>
+            <Text style={{ color: C.muted, fontSize: 26, lineHeight: 28 }}>×</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={{ color: C.muted, fontSize: 14, lineHeight: 22 }}>
+          Leave your number and/or email — we will be in touch shortly.
+        </Text>
+
+        {status === 'success' ? (
+          <>
+            <View style={{
+              backgroundColor: C.greenBg,
+              borderWidth: 1.5,
+              borderColor: C.green,
+              borderRadius: 12,
+              padding: 24,
+              alignItems: 'center',
+              gap: 8,
+              marginTop: 8,
+            }}>
+              <Text style={{ color: C.green, fontSize: 20, fontWeight: '900' }}>Got it!</Text>
+              <Text style={{ color: C.mid, fontSize: 14, textAlign: 'center', lineHeight: 22 }}>
+                We received your request and will reach out soon.
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => { reset(); onClose(); }}
+              style={{
+                borderWidth: 1.5, borderColor: C.border, borderRadius: 10,
+                paddingVertical: 13, alignItems: 'center', marginTop: 4,
+              }}
+            >
+              <Text style={{ color: C.mid, fontWeight: '700', fontSize: 15 }}>Close</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            {[
+              { key: 'name',  placeholder: 'Your name (optional)', type: 'default' },
+              { key: 'phone', placeholder: 'Phone number',         type: 'phone-pad' },
+              { key: 'email', placeholder: 'Email address',        type: 'email-address' },
+            ].map(field => (
+              <TextInput
+                key={field.key}
+                placeholder={field.placeholder}
+                placeholderTextColor={C.muted}
+                value={form[field.key]}
+                onChangeText={v => setForm(f => ({ ...f, [field.key]: v }))}
+                keyboardType={field.type}
+                autoCapitalize="none"
+                style={{
+                  borderWidth: 1.5,
+                  borderColor: C.border,
+                  borderRadius: 10,
+                  padding: 14,
+                  fontSize: 15,
+                  color: C.text,
+                  backgroundColor: C.white,
+                }}
+              />
+            ))}
+            {!!error && (
+              <Text style={{ color: '#DC2626', fontSize: 13, marginTop: -4 }}>{error}</Text>
+            )}
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={{
+                backgroundColor: C.green,
+                borderRadius: 10,
+                paddingVertical: 15,
+                alignItems: 'center',
+                marginTop: 4,
+              }}
+            >
+              <Text style={{ color: C.white, fontWeight: '900', fontSize: 15 }}>
+                {status === 'sending' ? 'Sending…' : 'Send Request'}
+              </Text>
+            </TouchableOpacity>
+            <Text style={{ color: C.muted, fontSize: 11, textAlign: 'center' }}>
+              We will never share your contact details.
+            </Text>
+          </>
+        )}
+      </TouchableOpacity>
+    </TouchableOpacity>
+  );
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
   const { width } = useWindowDimensions();
-  const [, setPage] = useState('home');
+  const [, setPage]                         = useState('home');
+  const [callMeBackOpen, setCallMeBackOpen] = useState(false);
 
   return (
     <View style={[styles.root, { width, overflow: 'hidden' }]}>
       <StatusBar style="dark" />
       <Navbar onNav={setPage} />
       <ScrollView style={{ flex: 1, width }} showsVerticalScrollIndicator={false} contentContainerStyle={{ width, overflow: 'hidden' }}>
-        <Hero onNav={setPage} />
+        <Hero onNav={setPage} onCallMeBack={() => setCallMeBackOpen(true)} />
         <LoseTimeSection />
         <HowItWorksSection />
         <PricingSection />
@@ -717,6 +956,7 @@ export default function App() {
         <Footer />
       </ScrollView>
       <StickyBar onNav={setPage} />
+      <CallMeBackModal visible={callMeBackOpen} onClose={() => setCallMeBackOpen(false)} />
     </View>
   );
 }
